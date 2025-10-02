@@ -17,7 +17,7 @@ const UserSchema = new Schema({
   password: String,
 });
 
-const contentTypes = ["image", "video", "article", "audio"];
+const contentTypes = ["tweets", "video", "documents", "links", "code", "texts", "audio"];
 const ContentSchema = new Schema({
   link: { type: String, required: true },
   type: { type: String, enum: contentTypes, required: true },
