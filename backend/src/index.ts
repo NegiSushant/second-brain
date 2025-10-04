@@ -2,16 +2,15 @@ import express from "express";
 import { Request, Response } from "express";
 import dotenv from "dotenv";
 dotenv.config();
-import { signIn, signUp } from "./routes/user";
-import { addNewContent } from "./routes/content";
 import cookieParser from "cookie-parser";
+import { router } from "./routes/routes";
+
+
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/api/v1", signUp);
-app.use("/api/v1", signIn);
-app.use("/api/v1", addNewContent);
+app.use("/api/v1", router);
 
 app.get("/", (req: Request, res: Response) => {
   return res.status(200).json({
