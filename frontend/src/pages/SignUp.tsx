@@ -1,21 +1,27 @@
 import { cn } from "../lib/utils";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
+import axios from "axios";
+
+const API = import.meta.env.VITE_API_URL;
 
 export const SignUp = () => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formdata = e.currentTarget;
     const username = formdata.username.value;
     const password = formdata.password.value;
+    console.log(API)
 
-    
+    const respomse = await axios.post(`${API}/api/v1/User/signUp`, {
+      username: username,
+      password: password,
+    });
 
+    console.log(respomse);
 
     alert(`username: ${username}, password: ${password}`);
-
-
   };
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-black dark:bg-black">
@@ -28,15 +34,18 @@ export const SignUp = () => {
       </p>
 
       <form className="my-8" onSubmit={handleSubmit}>
-        {/* <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4"> */}
         <LabelInputContainer>
           <Label htmlFor="username">Username</Label>
           <Input id="username" placeholder="test1" type="text" required />
         </LabelInputContainer>
-        {/* </div> */}
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" placeholder="••••••••" type="password" required  />
+          <Input
+            id="password"
+            placeholder="••••••••"
+            type="password"
+            required
+          />
         </LabelInputContainer>
 
         <button
