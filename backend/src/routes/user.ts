@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import { user } from "../db";
-import { z, ZodError } from "zod";
+import { email, z, ZodError } from "zod";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { JWT_PASSWORD } from "../config";
@@ -9,6 +9,7 @@ const userRoute = Router();
 
 const UserSchema = z.object({
   username: z.string().min(3, { message: "Username must contain 3 letters!" }),
+  email: z.email(),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" })
@@ -19,12 +20,13 @@ userRoute.post("/signUp", async (req: Request, res: Response) => {
   try {
     const userdata = UserSchema.parse(req.body);
 
-    const isUserExist = await user.findOne({ username: userdata.username });
+    const isUserExist = await user.findOne({ email: userdata.email });
     if (isUserExist)
       return res.status(403).json({ message: "user already exist!" });
     const hashPassword = await bcrypt.hash(userdata.password, 10);
     await user.create({
       username: userdata.username,
+      email: userdata.email,
       password: hashPassword,
     });
 
@@ -42,15 +44,15 @@ userRoute.post("/signUp", async (req: Request, res: Response) => {
 });
 
 userRoute.post("/signIn", async (req: Request, res: Response) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!username || !password) {
+  if (!email || !password) {
     return res
       .status(411)
       .json({ message: "username and password both required!" });
   }
   try {
-    const isUserExist = await user.findOne({ username });
+    const isUserExist = await user.findOne({ email });
     if (!isUserExist) {
       return res.status(403).json({
         message: "Wrong credential!",

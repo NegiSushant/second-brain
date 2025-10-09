@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import dotenv from "dotenv";
 dotenv.config();
 import cookieParser from "cookie-parser";
-// import cors from "cors"
 import cors from "cors";
 import { router } from "./routes/routes";
 
@@ -17,7 +16,7 @@ app.use("/api/v1", router);
 
 app.get("/", (req: Request, res: Response) => {
   return res.status(200).json({
-    message: "Hello from type script server!",
+    message: "Second Brain server is running and Up!",
   });
 });
 
