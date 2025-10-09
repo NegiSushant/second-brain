@@ -1,21 +1,27 @@
 import { cn } from "../lib/utils";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL
 
 export const SignUp = () => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formdata = e.currentTarget;
     const username = formdata.username.value;
     const password = formdata.password.value;
+    console.log(API_URL)
 
-    
+    const response = await axios.post(`${API_URL}/user/signUp`,{
+      username: username,
+      password: password
+    })
 
-
-    alert(`username: ${username}, password: ${password}`);
-
-
+    if(response.status === 200){
+      alert(response.data.message);
+    }
   };
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-black dark:bg-black">
