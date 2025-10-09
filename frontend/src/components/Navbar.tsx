@@ -90,7 +90,7 @@ export function NavbarDemo() {
                 variant="primary"
                 className="w-full"
               >
-                Book a call
+                Let's start
               </NavbarButton>
             </div>
           </MobileNavMenu>
