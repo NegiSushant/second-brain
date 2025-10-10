@@ -3,17 +3,41 @@ import React from "react";
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { cn } from "../lib/utils";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
+const API = import.meta.env.VITE_API_URL;
 
 export default function SignIn() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted");
+    const formdata = e.currentTarget;
+    const email = formdata.email.value;
+    const password = formdata.password.value;
+
+    try {
+      const response = await axios.post(
+        `${API}/user/signIn`,
+        {
+          email: email,
+          password: password,
+        },
+        { withCredentials: true }
+      );
+
+      if (response.status === 200) {
+        alert(response.data.message);
+        navigate("/brain");
+      }
+    } catch (err) {
+      alert(err);
+    }
   };
   return (
     <div className="shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black">
       <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
-        Welcome to Aceternity
+        Welcome to Second Brain
       </h2>
       <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
         Login to aceternity if you can because we don&apos;t have a login flow
@@ -42,8 +66,6 @@ export default function SignIn() {
         <div>
           have not an account <a>singUp</a>
         </div>
-
-
       </form>
     </div>
   );

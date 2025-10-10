@@ -25,15 +25,15 @@ export const SignUp = () => {
     const username = firstName + " " + lastName;
     const password = fpassword;
 
-    const response = await axios.post(`${API}/api/v1/User/signUp`, {
+    const response = await axios.post(`${API}/user/signUp`, {
       username: username,
-      password: password,
       email: email,
+      password: password,
     });
 
     if (response.status === 200) {
       alert(response.data.message);
-      navigate('/singin')
+      navigate("/signin");
     }
   };
   return (
