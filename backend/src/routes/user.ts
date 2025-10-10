@@ -19,6 +19,7 @@ const UserSchema = z.object({
 userRoute.post("/signUp", async (req: Request, res: Response) => {
   try {
     const userdata = UserSchema.parse(req.body);
+    console.log(userdata);
 
     const isUserExist = await user.findOne({ email: userdata.email });
     if (isUserExist)
@@ -38,7 +39,7 @@ userRoute.post("/signUp", async (req: Request, res: Response) => {
       });
     }
     return res.status(500).json({
-      message: `Internal server error!`,
+      message: `Internal server error: ${err}!`,
     });
   }
 });
