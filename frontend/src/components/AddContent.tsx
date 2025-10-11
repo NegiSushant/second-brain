@@ -24,7 +24,7 @@ export const AddContentModal = ({
     "video",
     "audio",
     "application",
-    "text",
+    "texts",
     "code",
     "tweet",
     "link",
@@ -41,7 +41,7 @@ export const AddContentModal = ({
     try {
       setLoading(true);
       const response = await axios.post(
-        `${API}/content`,
+        `${API}/content/content`,
         {
           type: selectedType,
           link,
