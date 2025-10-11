@@ -19,7 +19,6 @@ const UserSchema = z.object({
 userRoute.post("/signUp", async (req: Request, res: Response) => {
   try {
     const userdata = UserSchema.parse(req.body);
-    console.log(userdata);
 
     const isUserExist = await user.findOne({ email: userdata.email });
     if (isUserExist)
@@ -70,8 +69,8 @@ userRoute.post("/signIn", async (req: Request, res: Response) => {
     res.cookie("token", token, {
       httpOnly: true,
       // secure: process.env.NODE_ENV === "production",
-      secure: false, // true only in production (when HTTPS)
-      sameSite: "none",
+      // secure: false, // true only in production (when HTTPS)
+      // sameSite: "none",
       maxAge: 3600000,
     });
     return res.status(200).json({ message: "Login successful!" });
