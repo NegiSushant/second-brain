@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
-// import { Sidebar, SidebarBody, SidebarLink } from "../ui/sidebar";
+import { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/sidebar";
 import {
+  IconBrain,
   IconArrowLeft,
   IconBrandTwitter,
   IconBrandYoutube,
@@ -14,6 +14,8 @@ import {
 } from "@tabler/icons-react";
 import { motion } from "motion/react";
 import { cn } from "../lib/utils";
+import { BrainNav } from "../components/BrainNav";
+import CardDemo from "../components/cards-demo-2";
 
 export function Brain() {
   const links = [
@@ -117,19 +119,21 @@ export function Brain() {
     </div>
   );
 }
+
 export const Logo = () => {
   return (
     <a
       href="#"
       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
     >
-      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
+      {/* <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" /> */}
+      <IconBrain className="h-10 w-10 shrink-0 text-neutral-700 dark:text-neutral-200" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="font-medium whitespace-pre text-black dark:text-white"
+        className="font-bold whitespace-pre text-black dark:text-white"
       >
-        My Brain
+        Your Brain
       </motion.span>
     </a>
   );
@@ -150,25 +154,11 @@ const Dashboard = () => {
   return (
     <div className="flex flex-1">
       <div className="flex h-full w-full flex-1 flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 md:p-10 dark:border-neutral-700 dark:bg-neutral-900">
-        <div className="flex gap-2">
-          {[...new Array(4)].map((i, idx) => (
-            <div
-              key={"first-array-demo-2" + idx}
-              className="h-20 w-full animate-pulse rounded-lg bg-gray-100 dark:bg-neutral-800"
-            >
-              Hello from Brain Page dashboard header
-            </div>
-          ))}
-        </div>
+        <BrainNav />
         <div className="flex flex-1 gap-2">
-          {[...new Array(2)].map((i, idx) => (
-            <div
-              key={"second-array-demo-2" + idx}
-              className="h-full w-full animate-pulse rounded-lg bg-gray-100 dark:bg-neutral-800"
-            >
-              Hello from Brain Page body
-            </div>
-          ))}
+          <CardDemo />
+          <CardDemo />
+          <CardDemo />
         </div>
       </div>
     </div>
