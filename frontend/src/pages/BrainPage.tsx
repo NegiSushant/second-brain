@@ -15,68 +15,71 @@ import {
 import { motion } from "motion/react";
 import { cn } from "../lib/utils";
 import { BrainNav } from "../components/BrainNav";
-import CardDemo from "../components/cards-demo-2";
+// import CardDemo from "../components/cards-demo-2";
+import { Outlet, useNavigate } from "react-router-dom";
+// import { Dashboard } from "./brain/Dashboard";
 
 export function Brain() {
   const links = [
     {
       label: "Tweets",
-      href: "#",
+      href: "tweet",
       icon: (
         <IconBrandTwitter className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Youtube",
-      href: "#",
+      href: "youtube",
       icon: (
         <IconBrandYoutube className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Documents",
-      href: "#",
+      href: "docs",
       icon: (
         <IconFileTypeDoc className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Links",
-      href: "#",
+      href: "links",
       icon: (
         <IconExternalLink className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Code",
-      href: "#",
+      href: "code",
       icon: (
         <IconAdjustmentsCode className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Texts",
-      href: "#",
+      href: "text",
       icon: (
         <IconFileText className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Audio",
-      href: "#",
+      href: "audio",
       icon: (
         <IconDeviceAudioTape className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
       label: "Logout",
-      href: "#",
+      href: "logout",
       icon: (
         <IconArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
   ];
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   return (
     <div
       className={cn(
@@ -92,7 +95,11 @@ export function Brain() {
             </>
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
-                <SidebarLink key={idx} link={link} />
+                <SidebarLink
+                  key={idx}
+                  link={link}
+                  onClick={() => navigate(`/brain/${link.href}`)}
+                />
               ))}
             </div>
           </div>
@@ -115,15 +122,27 @@ export function Brain() {
           </div>
         </SidebarBody>
       </Sidebar>
-      <Dashboard />
+      {/* <Dashboard /> */}
+      <div className="flex flex-1">
+        <div className="flex h-full w-full flex-1 flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 md:p-10 dark:border-neutral-700 dark:bg-neutral-900">
+          <BrainNav title="hello" />
+          <div className="flex flex-1 gap-2">
+            <Outlet />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
 export const Logo = () => {
+  const navigate = useNavigate();
   return (
     <a
-      href="#"
+      // href="#"
+      onClick={() => {
+        navigate("/brain");
+      }}
       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
     >
       {/* <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" /> */}
@@ -138,6 +157,7 @@ export const Logo = () => {
     </a>
   );
 };
+
 export const LogoIcon = () => {
   return (
     <a
@@ -150,17 +170,15 @@ export const LogoIcon = () => {
 };
 
 // Dummy dashboard component with content
-const Dashboard = () => {
-  return (
-    <div className="flex flex-1">
-      <div className="flex h-full w-full flex-1 flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 md:p-10 dark:border-neutral-700 dark:bg-neutral-900">
-        <BrainNav />
-        <div className="flex flex-1 gap-2">
-          <CardDemo />
-          <CardDemo />
-          <CardDemo />
-        </div>
-      </div>
-    </div>
-  );
-};
+// export const Dashboard = () => {
+//   return (
+//     <div className="flex flex-1">
+//       <div className="flex h-full w-full flex-1 flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 md:p-10 dark:border-neutral-700 dark:bg-neutral-900">
+//         <BrainNav />
+//         <div className="flex flex-1 gap-2">
+//           <Outlet />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };

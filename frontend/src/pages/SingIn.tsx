@@ -63,8 +63,34 @@ export default function SignIn() {
         </button>
 
         <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-        <div>
-          have not an account <a>singUp</a>
+        <div className="flex flex-col space-y-2 text-center text-xs text-gray-500">
+          <p>
+            By signing up, you agree to our{" "}
+            <a
+              href="#"
+              className="underline underline-offset-4 hover:text-indigo-500"
+            >
+              Terms of Service
+            </a>{" "}
+            and{" "}
+            <a
+              href="#"
+              className="underline underline-offset-4 hover:text-indigo-500"
+            >
+              Privacy Policy
+            </a>
+            .
+          </p>
+
+          <p>
+            Don't have an account?
+            <button
+              className="font-medium text-indigo-600 hover:text-indigo-700"
+              onClick={() => navigate("/signup")}
+            >
+              Sign up
+            </button>
+          </p>
         </div>
       </form>
     </div>

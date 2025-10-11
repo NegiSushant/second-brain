@@ -4,15 +4,16 @@ import { IconBasketShare, IconAd } from "@tabler/icons-react";
 interface buttonProp {
   btype: string;
   content: string;
-  // onClick: string;
+  onClick?: () => void;
 }
 
-export function Button({ btype, content }: buttonProp) {
+export function Button({ btype, content, onClick }: buttonProp) {
   return (
     <div className="p-1 flex justify-center text-center">
       <HoverBorderGradient
         containerClassName="rounded-full"
         as="button"
+        onClick={onClick}
         className="dark:bg-black bg-white text-black dark:text-white flex items-center space-x-2"
       >
         {btype === "share" ? (
@@ -25,4 +26,3 @@ export function Button({ btype, content }: buttonProp) {
     </div>
   );
 }
-

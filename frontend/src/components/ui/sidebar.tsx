@@ -161,7 +161,7 @@ export const SidebarLink = ({
 }: {
   link: Links;
   className?: string;
-}) => {
+} & React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
   const { open, animate } = useSidebar();
   return (
     <a
