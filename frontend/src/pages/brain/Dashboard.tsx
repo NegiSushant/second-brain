@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import CardDemo from "../../components/cards-demo-2";
+import CardDemo from "../../components/Card";
 import axios from "axios";
 
 const API = import.meta.env.VITE_API_URL;
@@ -21,13 +21,8 @@ export const Dashboard = () => {
       const response = await axios.get<{
         message: string;
         data: contentSchema[];
-      }>(`${API}/content/content`, {
-        withCredentials: true,
-      });
+      }>(`${API}/content/content`, { withCredentials: true });
       setUserBrain(response.data.data || []);
-      console.log(response);
-
-      console.log(userBrain);
     } catch (err) {
       console.log(`Error while fetching data from server: ${err}`);
     } finally {
@@ -49,19 +44,23 @@ export const Dashboard = () => {
       {isLoading ? (
         "Loading..."
       ) : (
-        <div className="flex flex-1 gap-2">
+        <div className="flex gap-2">
           {userBrain.length > 0 ? (
             userBrain.map((item) => (
               <CardDemo
                 key={item._id}
+                _id={item._id}
                 title={item.title}
                 link={item.link}
                 type={item.type}
                 tags={item.tags}
+                onDeleteSuccess={getUserData}
               />
             ))
           ) : (
-            <p>No content found.</p>
+            <p className="text-gray-500 text-center font-bold text-2xl">
+              No content found.
+            </p>
           )}
         </div>
       )}
