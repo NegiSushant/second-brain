@@ -106,11 +106,12 @@ export function Brain() {
           <div>
             <SidebarLink
               link={{
-                label: "Sushant Singh Negi",
+                label: "Dev: Sushant Singh Negi",
                 href: "#",
                 icon: (
                   <img
-                    src="https://assets.aceternity.com/manu.png"
+                    src=""
+                    // src="https://assets.aceternity.com/manu.png"
                     className="h-7 w-7 shrink-0 rounded-full"
                     width={50}
                     height={50}
@@ -125,7 +126,7 @@ export function Brain() {
       {/* <Dashboard /> */}
       <div className="flex flex-1">
         <div className="flex h-full w-full flex-1 flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 md:p-10 dark:border-neutral-700 dark:bg-neutral-900">
-          <BrainNav title="hello" />
+          <BrainNav title="All Content" />
           <div className="flex flex-1 gap-2">
             <Outlet />
           </div>

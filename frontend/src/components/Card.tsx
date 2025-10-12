@@ -3,6 +3,7 @@ import axios from "axios";
 import { cn } from "../lib/utils";
 import { CardHeader } from "./CardHeader";
 import { useCallback } from "react";
+import { CardBody } from "./CardBody";
 const API = import.meta.env.VITE_API_URL;
 
 interface CardDemoProps {
@@ -23,8 +24,6 @@ export default function CardDemo({
   onDeleteSuccess,
 }: CardDemoProps) {
   const deleteContent = useCallback(async () => {
-    // e.preventDefault();
-    // const formdata = e.currentTarget;
     const contentId = _id;
     console.log("COntent_id:" + contentId);
 
@@ -41,6 +40,7 @@ export default function CardDemo({
       console.log(err);
     }
   }, [_id, onDeleteSuccess]);
+
   return (
     <div className="max-w-xs w-full group/card">
       <div
@@ -51,23 +51,8 @@ export default function CardDemo({
       >
         <div className="absolute w-full h-full top-0 left-0 transition duration-300 group-hover/card:bg-black opacity-60 pointer-events-none"></div>
         <CardHeader title={title} onClick={deleteContent} />
-        <div className="text content">
-          <h1 className="font-bold text-xl md:text-2xl text-gray-50 relative z-10">
-            {link}
-          </h1>
-          <p className="font-normal text-sm text-gray-50 relative z-10 my-4">
-            {tags.map((tag, index) => {
-              return (
-                <span
-                  key={index}
-                  className="mr-2 border-2 border-gray-100 px-2 rounded-full"
-                >
-                  #{tag.title}
-                </span>
-              );
-            })}
-          </p>
-        </div>
+
+        <CardBody link={link} type={type} tags={tags} />
       </div>
     </div>
   );

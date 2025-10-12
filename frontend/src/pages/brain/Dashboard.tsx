@@ -21,7 +21,9 @@ export const Dashboard = () => {
       const response = await axios.get<{
         message: string;
         data: contentSchema[];
-      }>(`${API}/content/content`, { withCredentials: true });
+      }>(`${API}/content/content`, 
+        { withCredentials: true }
+      );
       setUserBrain(response.data.data || []);
     } catch (err) {
       console.log(`Error while fetching data from server: ${err}`);
