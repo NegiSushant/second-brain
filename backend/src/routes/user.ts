@@ -69,8 +69,8 @@ userRoute.post("/signIn", async (req: Request, res: Response) => {
     res.cookie("token", token, {
       httpOnly: true,
       // secure: process.env.NODE_ENV === "production",
-      // secure: false, // true only in production (when HTTPS)
-      // sameSite: "none",
+      secure: true, // must be true for HTTPS
+      sameSite: "none", // required for cross-site cookies
       maxAge: 3600000,
     });
     return res.status(200).json({ message: "Login successful!" });
