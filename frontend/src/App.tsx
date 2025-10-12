@@ -1,6 +1,6 @@
 // import "./App.css";
 import { NavbarDemo } from "./components/Navbar";
-import Home from "./pages/Home";
+import { Home } from "./pages/Home";
 import { SignUp } from "./pages/SignUp";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import SignIn from "./pages/SingIn";
