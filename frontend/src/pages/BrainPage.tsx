@@ -16,10 +16,12 @@ import { motion } from "motion/react";
 import { cn } from "../lib/utils";
 import { BrainNav } from "../components/BrainNav";
 // import CardDemo from "../components/cards-demo-2";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useLocation, Outlet, useNavigate } from "react-router-dom";
 // import { Dashboard } from "./brain/Dashboard";
 
 export function Brain() {
+  const location = useLocation();
+
   const links = [
     {
       label: "Tweets",
@@ -78,8 +80,16 @@ export function Brain() {
       ),
     },
   ];
+
   const [open, setOpen] = useState(false);
+  const currentPath = location.pathname.split("/").pop() || "";
+  const title =
+    links.find((link) => link.href === currentPath)?.label || "All Content";
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    alert("Logout successfull");
+  };
   return (
     <div
       className={cn(
@@ -98,7 +108,10 @@ export function Brain() {
                 <SidebarLink
                   key={idx}
                   link={link}
-                  onClick={() => navigate(`/brain/${link.href}`)}
+                  onClick={() => {
+                    if (link.href === "logout") handleLogout();
+                    else navigate(`/brain/${link.href}`);
+                  }}
                 />
               ))}
             </div>
@@ -126,7 +139,7 @@ export function Brain() {
       {/* <Dashboard /> */}
       <div className="flex flex-1">
         <div className="flex h-full w-full flex-1 flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 md:p-10 dark:border-neutral-700 dark:bg-neutral-900">
-          <BrainNav title="All Content" />
+          <BrainNav title={title} />
           <div className="flex flex-1 gap-2">
             <Outlet />
           </div>

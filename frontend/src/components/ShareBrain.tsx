@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import axios from "axios";
+
 const API = import.meta.env.VITE_API_URL;
 
 interface ShareBrainProps {
@@ -18,17 +19,14 @@ export const ShareBrain = ({ open, onClose }: ShareBrainProps) => {
   const handleEnableSharing = async () => {
     setIsLoading(true);
     try {
-      // ✅ Replace this URL with your actual backend endpoint
       const res = await axios.post(
         `${API}/brain/share`,
         { share: true },
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
-      console.log(res);
 
-      setShareLink(`http://localhost:5173/brain/share/${res.data.hash}`); // backend returns { shareLink: "https://..." }
+      console.log(res);
+      setShareLink(`${API}/brain/${res.data.hash}`);
     } catch (err) {
       console.error("Error enabling sharing:", err);
       alert("Failed to enable sharing. Try again later.");
@@ -37,9 +35,7 @@ export const ShareBrain = ({ open, onClose }: ShareBrainProps) => {
     }
   };
 
-  const handleDisableSharing = () => {
-    setShareLink(null);
-  };
+  const handleDisableSharing = () => setShareLink(null);
 
   const handleCopy = () => {
     if (shareLink) {
@@ -49,36 +45,41 @@ export const ShareBrain = ({ open, onClose }: ShareBrainProps) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-60 z-50">
-      <div className="bg-white rounded-lg shadow-xl w-[90%] max-w-md p-6 relative">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50">
+      <div className="bg-white rounded-2xl shadow-2xl w-[90%] max-w-md p-6 relative border border-gray-200">
+        {/* Close Button */}
         <button
-          className="absolute top-3 right-3 bg-gray-100 p-2 rounded-full hover:bg-gray-200"
+          className="absolute top-3 right-3 bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition"
           onClick={onClose}
         >
-          <X className="w-5 h-5" />
+          <X className="w-5 h-5 text-gray-600" />
         </button>
 
-        <h2 className="text-xl font-semibold text-center mb-6">
+        <h2 className="text-xl font-semibold text-center mb-6 text-gray-800">
           Share Your Brain
         </h2>
 
         {shareLink ? (
           <div className="flex flex-col items-center space-y-4">
-            <div className="flex items-center border rounded-md w-full px-3 py-2 justify-between">
+            <div className="flex items-center border rounded-md w-full px-3 py-2 justify-between bg-gray-50">
               <p className="text-sm text-gray-700 truncate">{shareLink}</p>
               <button
-                className="text-blue-500 font-semibold ml-2"
+                className="text-blue-500 font-semibold ml-2 hover:text-blue-600"
                 onClick={handleCopy}
               >
                 Copy
               </button>
             </div>
           </div>
-        ) : null}
+        ) : (
+          <p className="text-gray-500 text-sm text-center mb-4">
+            Generate a shareable link to your brain.
+          </p>
+        )}
 
         <div className="flex justify-center space-x-4 mt-6">
           <button
-            className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition"
+            className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition disabled:opacity-70"
             onClick={handleEnableSharing}
             disabled={isLoading}
           >
