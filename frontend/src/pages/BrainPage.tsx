@@ -17,7 +17,9 @@ import { cn } from "../lib/utils";
 import { BrainNav } from "../components/BrainNav";
 // import CardDemo from "../components/cards-demo-2";
 import { useLocation, Outlet, useNavigate } from "react-router-dom";
-// import { Dashboard } from "./brain/Dashboard";
+import axios from "axios";
+
+const API = import.meta.env.VITE_API_URL;
 
 export function Brain() {
   const location = useLocation();
@@ -88,8 +90,14 @@ export function Brain() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    alert("Logout successfull");
-    navigate("/");
+    const response = await axios.post(`${API}/user/signOut`, {
+      withCredential: true,
+    });
+
+    if (response.status == 200) {
+      alert("Logout successfull");
+      navigate("/");
+    }
   };
   return (
     <div
