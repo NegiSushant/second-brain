@@ -89,6 +89,7 @@ export function Brain() {
 
   const handleLogout = async () => {
     alert("Logout successfull");
+    navigate("/");
   };
   return (
     <div
