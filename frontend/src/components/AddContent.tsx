@@ -27,7 +27,7 @@ export const AddContentModal = ({
     "texts",
     "code",
     "tweet",
-    "link",
+    "links",
   ];
 
   if (!open) return null;

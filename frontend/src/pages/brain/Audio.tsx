@@ -1,3 +1,9 @@
+import UnderDevelopment from "../../components/UnderDevelopment";
+
 export const Audio = () => {
-  return <div>Hello from Audio</div>;
+  return (
+    <div>
+      <UnderDevelopment />
+    </div>
+  );
 };

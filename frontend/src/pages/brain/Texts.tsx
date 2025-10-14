@@ -1,3 +1,9 @@
+import UnderDevelopment from "../../components/UnderDevelopment";
+
 export const Text = () => {
-  return <div>Hello from text</div>;
+  return (
+    <div>
+      <UnderDevelopment />
+    </div>
+  );
 };

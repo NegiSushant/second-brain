@@ -1,3 +1,9 @@
+import UnderDevelopment from "../../components/UnderDevelopment";
+
 export const Links = () => {
-  return <div>Hello from Links</div>;
+  return (
+    <div>
+      <UnderDevelopment />
+    </div>
+  );
 };

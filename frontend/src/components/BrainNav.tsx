@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Button } from "./button";
 import { AddContentModal } from "./AddContent";
+import { ShareBrain } from "./ShareBrain";
 
 interface title {
   title: string;
@@ -9,6 +10,8 @@ interface title {
 
 export const BrainNav = ({ title }: title) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
   return (
     <>
       <div className="w-full flex justify-between items-center">
@@ -17,7 +20,7 @@ export const BrainNav = ({ title }: title) => {
           <Button
             btype="share"
             content="Share Brain"
-            onClick={() => alert("hello")}
+            onClick={() => setIsShareModalOpen(true)}
           />
           <Button
             btype="Add"
@@ -29,6 +32,10 @@ export const BrainNav = ({ title }: title) => {
       <AddContentModal
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+      <ShareBrain
+        open={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
       />
     </>
   );

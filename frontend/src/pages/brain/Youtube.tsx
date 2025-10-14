@@ -1,3 +1,9 @@
+import UnderDevelopment from "../../components/UnderDevelopment";
+
 export const YouTube = () => {
-  return <div>Hello from Youtube</div>;
+  return (
+    <div>
+      <UnderDevelopment />
+    </div>
+  );
 };

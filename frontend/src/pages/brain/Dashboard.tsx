@@ -21,9 +21,7 @@ export const Dashboard = () => {
       const response = await axios.get<{
         message: string;
         data: contentSchema[];
-      }>(`${API}/content/content`, 
-        { withCredentials: true }
-      );
+      }>(`${API}/content/content`, { withCredentials: true });
       setUserBrain(response.data.data || []);
     } catch (err) {
       console.log(`Error while fetching data from server: ${err}`);
@@ -42,11 +40,11 @@ export const Dashboard = () => {
   }, []);
 
   return (
-    <div className="flex flex-1 gap-2">
+    <div className="flex flex-1 flex-col items-center justify-center w-full gap-2">
       {isLoading ? (
-        "Loading..."
+        <p className="text-gray-500 text-lg font-medium">Loading...</p>
       ) : (
-        <div className="flex gap-2">
+        <div className="overflow-y-auto max-h-[80vh] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 w-full">
           {userBrain.length > 0 ? (
             userBrain.map((item) => (
               <CardDemo
@@ -60,7 +58,7 @@ export const Dashboard = () => {
               />
             ))
           ) : (
-            <p className="text-gray-500 text-center font-bold text-2xl">
+            <p className="text-gray-500 text-center font-bold text-2xl col-span-full">
               No content found.
             </p>
           )}

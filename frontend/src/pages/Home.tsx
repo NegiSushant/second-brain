@@ -18,13 +18,6 @@ interface Feature {
   icon: React.ReactNode;
 }
 
-// interface Testimonial {
-//   name: string;
-//   role: string;
-//   quote: string;
-//   avatar: string;
-//   rating: number;
-// }
 
 interface PricingPlan {
   name: string;

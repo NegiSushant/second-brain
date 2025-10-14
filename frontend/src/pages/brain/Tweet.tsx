@@ -1,3 +1,9 @@
+import UnderDevelopment from "../../components/UnderDevelopment";
+
 export const Tweet = () => {
-  return <div>Hello from Tweet</div>;
+  return (
+    <div>
+      <UnderDevelopment />
+    </div>
+  );
 };
