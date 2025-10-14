@@ -4,6 +4,7 @@ import { email, z, ZodError } from "zod";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { JWT_PASSWORD } from "../config";
+import { authMiddleware } from "../middleware";
 
 const userRoute = Router();
 
@@ -80,6 +81,15 @@ userRoute.post("/signIn", async (req: Request, res: Response) => {
       message: `Internal server error: ${err}!`,
     });
   }
+});
+
+userRoute.post("/signOut", authMiddleware, (req: Request, res: Response) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
+  return res.status(200).json({ message: "Logout successful!" });
 });
 
 export { userRoute };
