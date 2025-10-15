@@ -26,7 +26,7 @@ export const AddContentModal = ({
     "application",
     "texts",
     "code",
-    "tweet",
+    "tweets",
     "links",
   ];
 

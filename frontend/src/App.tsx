@@ -10,9 +10,7 @@ import { YouTube } from "./pages/brain/Youtube";
 import { Documents } from "./pages/brain/Documents";
 import { Links } from "./pages/brain/Links";
 import { Code } from "./pages/brain/Code";
-import { Text } from "./pages/brain/Texts";
-import { Audio } from "./pages/brain/Audio";
-// import { Logout } from "./pages/brain/Logout";
+import { Notion } from "./pages/brain/NotionDocs";
 import { Dashboard } from "./pages/brain/Dashboard";
 
 function App() {
@@ -36,9 +34,7 @@ function App() {
               <Route path="docs" element={<Documents />} />
               <Route path="links" element={<Links />} />
               <Route path="code" element={<Code />} />
-              <Route path="text" element={<Text />} />
-              <Route path="audio" element={<Audio />} />
-              {/* <Route path="logout" element={<Logout />} /> */}
+              <Route path="notion" element={<Notion />} />
             </Route>
           </Route>
         </Routes>

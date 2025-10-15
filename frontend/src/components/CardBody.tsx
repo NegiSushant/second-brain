@@ -1,4 +1,6 @@
 import React from "react";
+import { YouTubeEmbed } from "react-social-media-embed";
+
 
 interface CardBodyProps {
   link: string;
@@ -20,14 +22,14 @@ export const CardBody: React.FC<CardBodyProps> = ({ link, type, tags }) => {
 
       case "video":
         return (
-          <video
-            src={link}
-            controls
+          <YouTubeEmbed
+            url={link}
+            height={"200px"} width={"200px"} 
             className="w-full rounded-md shadow-md my-2 relative z-10"
           />
         );
 
-      case "tweet":
+      case "tweets":
         return (
           <a
             href={link}
@@ -98,14 +100,14 @@ export const CardBody: React.FC<CardBodyProps> = ({ link, type, tags }) => {
 
       <div className="mt-3">
         {/* Display the link in a readable way */}
-        <a
+        {/* <a
           href={link}
           target="_blank"
           rel="noopener noreferrer"
           className="block text-indigo-400 text-sm truncate hover:underline"
         >
           {link}
-        </a>
+        </a> */}
 
         {/* Display tags */}
         {tags?.length > 0 && (

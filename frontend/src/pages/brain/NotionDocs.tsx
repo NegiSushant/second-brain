@@ -1,6 +1,6 @@
 import UnderDevelopment from "../../components/UnderDevelopment";
 
-export const Text = () => {
+export const Notion = () => {
   return (
     <div>
       <UnderDevelopment />

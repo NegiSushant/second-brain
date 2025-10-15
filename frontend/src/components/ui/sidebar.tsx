@@ -157,15 +157,24 @@ export const MobileSidebar = ({
 export const SidebarLink = ({
   link,
   className,
+  onClick,
   ...props
 }: {
   link: Links;
   className?: string;
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
   const { open, animate } = useSidebar();
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    // If a custom onClick is provided, call it and prevent default navigation
+    if (onClick) {
+      e.preventDefault();
+      onClick(e);
+    }
+  };
   return (
     <a
       href={link.href}
+      onClick={handleClick}
       className={cn(
         "flex items-center justify-start gap-2  group/sidebar py-2",
         className

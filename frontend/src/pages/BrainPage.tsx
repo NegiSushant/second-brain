@@ -6,11 +6,10 @@ import {
   IconArrowLeft,
   IconBrandTwitter,
   IconBrandYoutube,
-  IconFileText,
   IconFileTypeDoc,
   IconExternalLink,
+  IconBrandNotion,
   IconAdjustmentsCode,
-  IconDeviceAudioTape,
 } from "@tabler/icons-react";
 import { motion } from "motion/react";
 import { cn } from "../lib/utils";
@@ -40,6 +39,13 @@ export function Brain() {
       ),
     },
     {
+      label: "Notions",
+      href: "notion",
+      icon: (
+        <IconBrandNotion className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
       label: "Documents",
       href: "docs",
       icon: (
@@ -61,20 +67,6 @@ export function Brain() {
       ),
     },
     {
-      label: "Texts",
-      href: "text",
-      icon: (
-        <IconFileText className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
-    {
-      label: "Audio",
-      href: "audio",
-      icon: (
-        <IconDeviceAudioTape className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
-    {
       label: "Logout",
       href: "logout",
       icon: (
@@ -89,10 +81,15 @@ export function Brain() {
     links.find((link) => link.href === currentPath)?.label || "All Content";
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    const response = await axios.post(`${API}/user/signOut`, {
-      withCredential: true,
-    });
+  const handleLogout = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = await axios.post(
+      `${API}/user/signOut`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
 
     if (response.status == 200) {
       alert("Logout successfull");
@@ -117,9 +114,10 @@ export function Brain() {
                 <SidebarLink
                   key={idx}
                   link={link}
-                  onClick={() => {
-                    if (link.href === "logout") handleLogout();
-                    else navigate(`/brain/${link.href}`);
+                  onClick={(e) => {
+                    if (link.href === "logout") {
+                      handleLogout(e);
+                    } else navigate(`/brain/${link.href}`);
                   }}
                 />
               ))}
@@ -132,7 +130,7 @@ export function Brain() {
                 href: "#",
                 icon: (
                   <img
-                    src=""
+                    src="https://x.com/Negi25_/photo"
                     // src="https://assets.aceternity.com/manu.png"
                     className="h-7 w-7 shrink-0 rounded-full"
                     width={50}
@@ -191,17 +189,3 @@ export const LogoIcon = () => {
     </a>
   );
 };
-
-// Dummy dashboard component with content
-// export const Dashboard = () => {
-//   return (
-//     <div className="flex flex-1">
-//       <div className="flex h-full w-full flex-1 flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 md:p-10 dark:border-neutral-700 dark:bg-neutral-900">
-//         <BrainNav />
-//         <div className="flex flex-1 gap-2">
-//           <Outlet />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
