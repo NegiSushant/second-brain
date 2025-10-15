@@ -18,7 +18,6 @@ interface Feature {
   icon: React.ReactNode;
 }
 
-
 interface PricingPlan {
   name: string;
   monthly: number;
@@ -136,7 +135,7 @@ export const Home = () => {
         >
           {/* Placeholder abstract graphic */}
           <div className="w-full h-64 lg:h-96 bg-purple-200 rounded-3xl animate-pulse">
-            
+            <img src="brain.png" alt="Brian Image" />
           </div>
         </motion.div>
       </section>

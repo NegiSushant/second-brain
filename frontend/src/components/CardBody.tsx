@@ -32,7 +32,11 @@ export const CardBody: React.FC<CardBodyProps> = ({ link, type, tags }) => {
         );
 
       case "tweets":
-        return <TwitterCard url={link} />;
+        return (
+          <div className="m-0 p-0 overflow-hidden">
+            <TwitterCard url={link} />
+          </div>
+        );
 
       case "links":
         return (
@@ -72,10 +76,12 @@ export const CardBody: React.FC<CardBodyProps> = ({ link, type, tags }) => {
   };
 
   return (
-    <div className="p-4 m-0 bg-gray-950 rounded-xl shadow-md border border-gray-800 text-white">
-      <div>{renderContentByType()}</div>
+    <>
+      <div className=" bg-gray-950 rounded-xl shadow-md border border-gray-800 text-white">
+        {renderContentByType()}
+      </div>
 
-      <div className="mt-3">
+      <div className="m-0">
         {/* Display tags */}
         {tags?.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-3">
@@ -90,6 +96,7 @@ export const CardBody: React.FC<CardBodyProps> = ({ link, type, tags }) => {
           </div>
         )}
       </div>
-    </div>
+      {/* </div> */}
+    </>
   );
 };

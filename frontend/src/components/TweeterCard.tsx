@@ -47,12 +47,11 @@ export const TwitterCard: React.FC<TwitterCardProps> = ({ url }) => {
   const correctedUrl = url.replace("x.com", "twitter.com");
 
   return (
-    <div className="bg-gray-950 border border-gray-800 rounded-xl p-4 text-white shadow-md">
-      <h3 className="text-lg font-semibold mb-3">Tweet</h3>
+    <div className="bg-gray-950 border border-gray-800 rounded-xl text-white shadow-md">
       <blockquote className="twitter-tweet">
         <a href={correctedUrl}></a>
       </blockquote>
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center">
         <a
           href={correctedUrl}
           target="_blank"
