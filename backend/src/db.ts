@@ -45,7 +45,7 @@ const contentTypes = [
   "links",
   "code",
   "texts",
-  "audio",
+  "notion",
 ];
 const ContentSchema = new Schema({
   link: { type: String, required: true },
