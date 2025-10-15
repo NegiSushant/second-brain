@@ -130,7 +130,8 @@ export function Brain() {
                 href: "#",
                 icon: (
                   <img
-                    src="https://x.com/Negi25_/photo"
+                    // src="https://x.com/Negi25_/photo"
+                    src="https://media.licdn.com/dms/image/v2/D5603AQGlG_ZczLD-8Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1726897221169?e=2147483647&v=beta&t=awOHdgYtXb73syFqvlq0CW_dSRN4DBsivug2VnVU-fs"
                     // src="https://assets.aceternity.com/manu.png"
                     className="h-7 w-7 shrink-0 rounded-full"
                     width={50}

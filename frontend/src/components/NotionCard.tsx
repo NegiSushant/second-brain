@@ -42,6 +42,16 @@ export const NotionCard: React.FC<NotionCardProps> = ({ url }) => {
         className="w-full h-full object-cover"
         onError={handleError}
       />
+      <div className="flex justify-center mt-4">
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md font-semibold transition duration-200"
+        >
+          View Notion
+        </a>
+      </div>
     </div>
   );
 };

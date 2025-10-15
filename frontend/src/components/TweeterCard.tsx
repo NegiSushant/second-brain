@@ -3,7 +3,12 @@ import { useEffect } from "react";
 
 declare global {
   interface Window {
-    twttr: any;
+    // twttr: any;
+    twttr: typeof window.twttr & {
+      widgets: {
+        load: (element?: HTMLElement) => void;
+      };
+    };
   }
 }
 
