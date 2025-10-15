@@ -22,7 +22,7 @@ export const AddContentModal = ({
     "image",
     "document",
     "video",
-    "audio",
+    "notion",
     "application",
     "texts",
     "code",

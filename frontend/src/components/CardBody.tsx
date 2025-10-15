@@ -1,6 +1,7 @@
 import React from "react";
 import { YouTubeEmbed } from "react-social-media-embed";
-
+import { TwitterCard } from "./TweeterCard";
+import { NotionCard } from "./NotionCard";
 
 interface CardBodyProps {
   link: string;
@@ -11,37 +12,21 @@ interface CardBodyProps {
 export const CardBody: React.FC<CardBodyProps> = ({ link, type, tags }) => {
   const renderContentByType = () => {
     switch (type) {
-      case "audio":
-        return (
-          <audio
-            src={link}
-            controls
-            className="w-full rounded-md shadow-sm my-2 relative z-10"
-          />
-        );
+      case "notion":
+        return <NotionCard url={link} />;
 
       case "video":
         return (
           <YouTubeEmbed
             url={link}
-            height={"200px"} width={"200px"} 
+            height={"200px"}
+            width={"200px"}
             className="w-full rounded-md shadow-md my-2 relative z-10"
           />
         );
 
       case "tweets":
-        return (
-          <a
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex justify-center my-2"
-          >
-            <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md font-semibold transition duration-200">
-              View Tweet
-            </button>
-          </a>
-        );
+        return <TwitterCard url={link} />;
 
       case "links":
         return (
@@ -99,16 +84,6 @@ export const CardBody: React.FC<CardBodyProps> = ({ link, type, tags }) => {
       <div>{renderContentByType()}</div>
 
       <div className="mt-3">
-        {/* Display the link in a readable way */}
-        {/* <a
-          href={link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block text-indigo-400 text-sm truncate hover:underline"
-        >
-          {link}
-        </a> */}
-
         {/* Display tags */}
         {tags?.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-3">
