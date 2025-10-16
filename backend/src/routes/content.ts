@@ -120,7 +120,7 @@ contentRoute.get(
   }
 );
 
-contentRoute.get(
+contentRoute.post(
   "/content/:filter",
   authMiddleware,
   async (req: Request, res: Response) => {
