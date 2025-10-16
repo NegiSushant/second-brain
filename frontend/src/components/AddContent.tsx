@@ -19,16 +19,22 @@ export const AddContentModal = ({
   const [loading, setLoading] = useState(false);
 
   const types = [
-    "image",
-    "document",
     "video",
     "notion",
-    "application",
-    "texts",
-    "code",
     "tweets",
     "links",
   ];
+  // const types = [
+  //   "image",
+  //   "document",
+  //   "video",
+  //   "notion",
+  //   "application",
+  //   "texts",
+  //   "code",
+  //   "tweets",
+  //   "links",
+  // ];
 
   if (!open) return null;
 
