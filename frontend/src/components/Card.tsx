@@ -49,7 +49,7 @@ export default function CardDemo({
           "bg-[url(/brainImage.png)] bg-cover"
         )}
       >
-        {/* <div className="absolute w-full h-full top-0 left-0 transition duration-300 group-hover/card:bg-black opacity-60 pointer-events-none"></div> */}
+        
         <CardHeader title={title} onClick={deleteContent} />
 
         <CardBody link={link} type={type} tags={tags} />
