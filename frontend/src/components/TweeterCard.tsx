@@ -1,9 +1,7 @@
-"use client";
 import { useEffect } from "react";
 
 declare global {
   interface Window {
-    // twttr: any;
     twttr: typeof window.twttr & {
       widgets: {
         load: (element?: HTMLElement) => void;
@@ -12,27 +10,23 @@ declare global {
   }
 }
 
-interface TwitterCardProps {
-  url: string; // the tweet URL (x.com or twitter.com)
+const loadTwitterScript = () => {
+  if (!document.getElementById("twitter-wjs")) {
+    const script = document.createElement("script");
+    script.id = "twitter-wjs";
+    script.src = "https://platform.twitter.com/widgets.js";
+    script.async = true;
+    script.charset = "utf-8";
+    document.body.appendChild(script);
+  }
+};
+
+interface params {
+  url: string;
 }
-
-export const TwitterCard: React.FC<TwitterCardProps> = ({ url }) => {
-  // Ensures Twitter’s script is loaded only once
-  const loadTwitterScript = () => {
-    if (!document.getElementById("twitter-wjs")) {
-      const script = document.createElement("script");
-      script.id = "twitter-wjs";
-      script.src = "https://platform.twitter.com/widgets.js";
-      script.async = true;
-      script.charset = "utf-8";
-      document.body.appendChild(script);
-    }
-  };
-
+export function TwitterCard(props: params) {
   useEffect(() => {
     loadTwitterScript();
-
-    // Wait until window.twttr is ready, then render the embed
     const checkAndLoadWidgets = () => {
       if (window.twttr && window.twttr.widgets) {
         window.twttr.widgets.load();
@@ -41,26 +35,13 @@ export const TwitterCard: React.FC<TwitterCardProps> = ({ url }) => {
       }
     };
     checkAndLoadWidgets();
-  }, [url]);
-
-  // Replace "x.com" → "twitter.com" for proper embedding
-  const correctedUrl = url.replace("x.com", "twitter.com");
+  }, [props.url]);
 
   return (
-    <div className="bg-gray-950 border border-gray-800 rounded-xl text-white shadow-md">
+    <div>
       <blockquote className="twitter-tweet">
-        <a href={correctedUrl}></a>
+        <a href={props.url}></a>
       </blockquote>
-      <div className="flex justify-center">
-        <a
-          href={correctedUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md font-semibold transition duration-200"
-        >
-          View on Twitter
-        </a>
-      </div>
     </div>
   );
-};
+}

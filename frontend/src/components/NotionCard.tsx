@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect } from "react";
 
 interface NotionCardProps {
@@ -9,7 +8,6 @@ export const NotionCard: React.FC<NotionCardProps> = ({ url }) => {
   const [imageSrc, setImageSrc] = useState<string>("");
 
   useEffect(() => {
-    // const defaultStyle = "w-full h-full object-cover rounded-md";
     try {
       // Default thumbnail from Thum.io
       let generatedSrc = `//image.thum.io/get/${url}`;

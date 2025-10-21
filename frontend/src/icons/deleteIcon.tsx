@@ -6,7 +6,7 @@ export const Delete = () => {
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth="1.5"
-      stroke="white"
+      stroke="currentColor"
     >
       <path
         strokeLinecap="round"

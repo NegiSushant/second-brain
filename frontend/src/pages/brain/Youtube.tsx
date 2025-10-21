@@ -1,7 +1,7 @@
 import axios from "axios";
 // import UnderDevelopment from "../../components/UnderDevelopment";
 import { useEffect, useState } from "react";
-import CardDemo from "../../components/Card";
+import TestCard from "../../components/TestCard";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -22,11 +22,9 @@ export const YouTube = () => {
       setIsLoading(true);
       const response = await axios.get<{ data: userYoutubeData[] }>(
         `${API}/content/content/video`,
-        // {
-        //   filter:"youtube",
-        // },
         { withCredentials: true }
       );
+      console.log(response.data.data);
 
       if (response.status === 200) {
         setUserYoutubeData(response.data.data || []);
@@ -34,34 +32,33 @@ export const YouTube = () => {
     } catch (err) {
       setUserYoutubeData([]);
       alert(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     getUserYouTubeData();
   }, []);
-  // return (
-  //   <div>
-  //     <UnderDevelopment />
-  //   </div>
-  // );
   return (
-    <div className="flex flex-1 flex-col items-center justify-center w-full gap-2">
+    <div className="flex flex-col items-center justify-start w-full h-screen">
       {isLoading ? (
         <p className="text-gray-500 text-lg font-medium">Loading...</p>
       ) : (
-        <div className="overflow-y-auto max-h-[80vh] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl px-4 py-6 min-h-0 overflow-y-auto scroll-smooth md:h-[calc(100vh-120px)] h-auto">
           {userYoutueData.length > 0 ? (
             userYoutueData.map((item) => (
-              <CardDemo
-                key={item._id}
-                _id={item._id}
-                title={item.title}
-                link={item.link}
-                type={item.type}
-                tags={item.tags}
-                onDeleteSuccess={getUserYouTubeData}
-              />
+              <div key={item._id} className="flex justify-center">
+                {/* console.log(userYoutubeData); */}
+                <TestCard
+                  _id={item._id}
+                  title={item.title}
+                  link={item.link}
+                  type={item.type}
+                  tags={item.tags}
+                  onDeleteSuccess={getUserYouTubeData}
+                />
+              </div>
             ))
           ) : (
             <p className="text-gray-500 text-center font-bold text-2xl col-span-full">
