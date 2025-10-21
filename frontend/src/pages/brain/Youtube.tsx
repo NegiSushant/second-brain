@@ -1,72 +1,58 @@
-import axios from "axios";
-// import UnderDevelopment from "../../components/UnderDevelopment";
-import { useEffect, useState } from "react";
 import TestCard from "../../components/TestCard";
-
-const API = import.meta.env.VITE_API_URL;
-
-interface userYoutubeData {
-  _id: string;
-  title: string;
-  link: string;
-  type: string;
-  tags: string[];
-}
+import { useFilterData } from "../../hooks/FilterDataHook";
 
 export const YouTube = () => {
-  const [userYoutueData, setUserYoutubeData] = useState<userYoutubeData[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    data: userData,
+    isLoading,
+    error,
+    refetch,
+  } = useFilterData({ filter: "video" });
 
-  const getUserYouTubeData = async () => {
-    try {
-      setIsLoading(true);
-      const response = await axios.get<{ data: userYoutubeData[] }>(
-        `${API}/content/content/video`,
-        { withCredentials: true }
-      );
-      console.log(response.data.data);
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-screen">
+        <p className="text-red-500 text-lg font-medium">Error: {error}</p>
+        <button
+          onClick={refetch}
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
-      if (response.status === 200) {
-        setUserYoutubeData(response.data.data || []);
-      }
-    } catch (err) {
-      setUserYoutubeData([]);
-      alert(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  if (isLoading || userData === null) {
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-screen">
+        <p className="text-gray-500 text-lg font-medium">Loading...</p>
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    getUserYouTubeData();
-  }, []);
   return (
     <div className="flex flex-col items-center justify-start w-full h-screen">
-      {isLoading ? (
-        <p className="text-gray-500 text-lg font-medium">Loading...</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl px-4 py-6 min-h-0 overflow-y-auto scroll-smooth md:h-[calc(100vh-120px)] h-auto">
-          {userYoutueData.length > 0 ? (
-            userYoutueData.map((item) => (
-              <div key={item._id} className="flex justify-center">
-                {/* console.log(userYoutubeData); */}
-                <TestCard
-                  _id={item._id}
-                  title={item.title}
-                  link={item.link}
-                  type={item.type}
-                  tags={item.tags}
-                  onDeleteSuccess={getUserYouTubeData}
-                />
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500 text-center font-bold text-2xl col-span-full">
-              No content found.
-            </p>
-          )}
-        </div>
-      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl px-4 py-6 min-h-0 overflow-y-auto scroll-smooth md:h-[calc(100vh-120px)] h-auto">
+        {userData.length > 0 ? (
+          userData.map((item) => (
+            <div key={item._id} className="flex justify-center">
+              <TestCard
+                _id={item._id}
+                title={item.title}
+                link={item.link}
+                type={item.type}
+                tags={item.tags}
+                onDeleteSuccess={refetch}
+              />
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500 text-center font-bold text-2xl col-span-full">
+            No content found.
+          </p>
+        )}
+      </div>
     </div>
   );
 };

@@ -3,10 +3,12 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useState } from "react";
 
 const API = import.meta.env.VITE_API_URL;
 
 export const SignUp = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,16 +26,22 @@ export const SignUp = () => {
 
     const username = firstName + " " + lastName;
     const password = fpassword;
+    try {
+      setIsLoading(true);
+      const response = await axios.post(`${API}/user/signUp`, {
+        username: username,
+        email: email,
+        password: password,
+      });
 
-    const response = await axios.post(`${API}/user/signUp`, {
-      username: username,
-      email: email,
-      password: password,
-    });
-
-    if (response.status === 200) {
-      alert(response.data.message);
-      navigate("/signin");
+      if (response.status === 200) {
+        alert(response.data.message);
+        navigate("/signin");
+      }
+    } catch (err) {
+      alert(err);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -42,8 +50,8 @@ export const SignUp = () => {
         Welcome to Second Brain
       </h2>
       <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
-        Login to aceternity if you can because we don&apos;t have a login flow
-        yet
+        Your digital second brain for capturing, organizing, and connecting your
+        ideas.
       </p>
 
       <form className="my-8" onSubmit={handleSubmit}>
@@ -78,7 +86,7 @@ export const SignUp = () => {
           className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset]"
           type="submit"
         >
-          Sign up &rarr;
+          {isLoading ? "Sign up..." : "Sign up →"}
           <BottomGradient />
         </button>
 
@@ -106,8 +114,11 @@ export const SignUp = () => {
           <p>
             Already have an account?
             <button
-              className="font-medium text-indigo-600 hover:text-indigo-700"
-              onClick={() => navigate("/signin")}
+              className="font-medium text-indigo-600 hover:text-indigo-700 cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/signin");
+              }}
             >
               Sign in
             </button>

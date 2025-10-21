@@ -14,7 +14,6 @@ import {
 import { motion } from "motion/react";
 import { cn } from "../lib/utils";
 import { BrainNav } from "../components/BrainNav";
-// import CardDemo from "../components/cards-demo-2";
 import { useLocation, Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -45,18 +44,19 @@ export function Brain() {
         <IconBrandNotion className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
-    {
-      label: "Documents",
-      href: "docs",
-      icon: (
-        <IconFileTypeDoc className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
+
     {
       label: "Links",
       href: "links",
       icon: (
         <IconExternalLink className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      ),
+    },
+    {
+      label: "Documents",
+      href: "docs",
+      icon: (
+        <IconFileTypeDoc className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
     },
     {
@@ -81,8 +81,7 @@ export function Brain() {
     links.find((link) => link.href === currentPath)?.label || "All Content";
   const navigate = useNavigate();
 
-  const handleLogout = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleLogout = async () => {
     const response = await axios.post(
       `${API}/user/signOut`,
       {},
@@ -114,9 +113,9 @@ export function Brain() {
                 <SidebarLink
                   key={idx}
                   link={link}
-                  onClick={(e) => {
+                  onClick={() => {
                     if (link.href === "logout") {
-                      handleLogout(e);
+                      handleLogout();
                     } else navigate(`/brain/${link.href}`);
                   }}
                 />
@@ -130,9 +129,7 @@ export function Brain() {
                 href: "#",
                 icon: (
                   <img
-                    // src="https://x.com/Negi25_/photo"
                     src="https://media.licdn.com/dms/image/v2/D5603AQGlG_ZczLD-8Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1726897221169?e=2147483647&v=beta&t=awOHdgYtXb73syFqvlq0CW_dSRN4DBsivug2VnVU-fs"
-                    // src="https://assets.aceternity.com/manu.png"
                     className="h-7 w-7 shrink-0 rounded-full"
                     width={50}
                     height={50}
@@ -161,18 +158,16 @@ export const Logo = () => {
   const navigate = useNavigate();
   return (
     <a
-      // href="#"
       onClick={() => {
         navigate("/brain");
       }}
       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
     >
-      {/* <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" /> */}
-      <IconBrain className="h-10 w-10 shrink-0 text-neutral-700 dark:text-neutral-200" />
+      <IconBrain className="h-15 w-15 shrink-0 text-neutral-700 dark:text-neutral-200 hover:bg-gray-100 cursor-pointer" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="font-bold whitespace-pre text-black dark:text-white"
+        className="font-bold whitespace-pre text-black dark:text-white hover:bg-gray-100 cursor-pointer"
       >
         Your Brain
       </motion.span>

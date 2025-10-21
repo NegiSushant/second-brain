@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { cn } from "../lib/utils";
@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 const API = import.meta.env.VITE_API_URL;
 
 export default function SignIn() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -17,6 +19,7 @@ export default function SignIn() {
     const password = formdata.password.value;
 
     try {
+      setIsLoading(true);
       const response = await axios.post(
         `${API}/user/signIn`,
         {
@@ -32,6 +35,8 @@ export default function SignIn() {
       }
     } catch (err) {
       alert(err);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -40,8 +45,8 @@ export default function SignIn() {
         Welcome to Second Brain
       </h2>
       <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
-        Login to aceternity if you can because we don&apos;t have a login flow
-        yet
+        Your digital second brain for capturing, organizing, and connecting your
+        ideas.
       </p>
 
       <form className="my-8" onSubmit={handleSubmit}>
@@ -55,10 +60,10 @@ export default function SignIn() {
         </LabelInputContainer>
 
         <button
-          className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset]"
+          className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset] cursor-pointer"
           type="submit"
         >
-          Sign In &rarr;
+          {isLoading ? "Sign In..." : `Sign In →`}
           <BottomGradient />
         </button>
 
@@ -85,8 +90,11 @@ export default function SignIn() {
           <p>
             Don't have an account?
             <button
-              className="font-medium text-indigo-600 hover:text-indigo-700"
-              onClick={() => navigate("/signup")}
+              className="font-medium text-indigo-600 hover:text-indigo-700 cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/signup");
+              }}
             >
               Sign up
             </button>
