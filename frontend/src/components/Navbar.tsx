@@ -1,10 +1,11 @@
 "use client";
+// import { IconBrain } from "@tabler/icons-react";
 import {
   Navbar,
   NavBody,
   NavItems,
   MobileNav,
-  NavbarLogo,
+  // NavbarLogo,
   NavbarButton,
   MobileNavHeader,
   MobileNavToggle,
@@ -13,6 +14,7 @@ import {
 // "@/components/ui/resizable-navbar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { NavbarLogo } from "../icons/NavbarIcon";
 
 export function NavbarDemo() {
   const navItems = [
@@ -38,6 +40,7 @@ export function NavbarDemo() {
       <Navbar>
         {/* Desktop Navigation */}
         <NavBody>
+          {/* <NavbarLogo /> */}
           <NavbarLogo />
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">

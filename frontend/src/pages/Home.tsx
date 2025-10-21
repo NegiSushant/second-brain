@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { CheckIcon } from "@heroicons/react/24/solid";
-// import { CheckIcon, StarIcon } from "@heroicons/react/24/solid";
 import {
   LightBulbIcon,
   Squares2X2Icon,
@@ -9,6 +8,8 @@ import {
   MegaphoneIcon,
 } from "@heroicons/react/24/outline";
 import Testimonials from "../components/Testimonial";
+import Footer from "../components/Footer";
+import Working from "../components/Working";
 
 // TypeScript Interfaces
 interface Feature {
@@ -27,16 +28,7 @@ interface PricingPlan {
   disabled?: boolean;
 }
 
-// Hook for dynamic page title
-const usePageTitle = (title: string) => {
-  useEffect(() => {
-    document.title = title;
-  }, [title]);
-};
-
 export const Home = () => {
-  usePageTitle("MindVault – Your Infinite Memory Palace | Boost Productivity");
-
   // Pricing toggle state
   const [annual, setAnnual] = useState(false);
   // Features data
@@ -171,32 +163,7 @@ export const Home = () => {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 bg-white">
-        <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-          <div className="relative flex flex-col md:flex-row items-center md:justify-between">
-            {[1, 2, 3, 4].map((step) => (
-              <motion.div
-                key={step}
-                className="flex flex-col items-center text-center md:text-center mb-10 md:mb-0"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: step * 0.2 }}
-              >
-                <div className="w-16 h-16 flex items-center justify-center rounded-full bg-purple-100 text-purple-600 font-bold text-xl mb-4">
-                  {step}
-                </div>
-                <p className="max-w-xs">
-                  Step {step} description goes here with abstract illustrations.
-                </p>
-              </motion.div>
-            ))}
-            {/* Progress bar */}
-            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-px bg-purple-200 -z-10"></div>
-          </div>
-        </div>
-      </section>
+      <Working />
 
       <Testimonials />
 
@@ -293,37 +260,7 @@ export const Home = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h4 className="font-semibold mb-2">Product</h4>
-            <ul className="space-y-1">
-              <li>Features</li>
-              <li>Pricing</li>
-              <li>Demo</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Company</h4>
-            <ul className="space-y-1">
-              <li>About Us</li>
-              <li>Careers</li>
-              <li>Blog</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Legal</h4>
-            <ul className="space-y-1">
-              <li>Privacy Policy</li>
-              <li>Terms of Service</li>
-              <li>GDPR</li>
-            </ul>
-          </div>
-        </div>
-        <div className="mt-8 text-center text-sm">
-          © 2025 MindVault Inc. All rights reserved.
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
