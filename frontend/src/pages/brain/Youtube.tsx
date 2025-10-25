@@ -1,4 +1,4 @@
-import TestCard from "../../components/TestCard";
+import Card from "../../components/Card";
 import { useFilterData } from "../../hooks/FilterDataHook";
 
 export const YouTube = () => {
@@ -37,7 +37,7 @@ export const YouTube = () => {
         {userData.length > 0 ? (
           userData.map((item) => (
             <div key={item._id} className="flex justify-center">
-              <TestCard
+              <Card
                 _id={item._id}
                 title={item.title}
                 link={item.link}

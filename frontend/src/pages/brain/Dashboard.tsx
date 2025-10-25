@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import TestCard from "../../components/TestCard";
+import Card from "../../components/Card";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -8,6 +8,7 @@ interface contentSchema {
   _id: string;
   title: string;
   link: string;
+  description: string;
   type: string;
   tags: string[];
 }
@@ -51,10 +52,11 @@ export const Dashboard = () => {
           {userBrain.length > 0 ? (
             userBrain.map((item) => (
               <div key={item._id} className="flex justify-center">
-                <TestCard
+                <Card
                   _id={item._id}
                   title={item.title}
                   link={item.link}
+                  description={item.description}
                   type={item.type}
                   tags={item.tags}
                   onDeleteSuccess={getUserData}

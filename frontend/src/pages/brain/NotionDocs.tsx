@@ -1,4 +1,4 @@
-import TestCard from "../../components/TestCard";
+import Card from "../../components/Card";
 import { useFilterData } from "../../hooks/FilterDataHook";
 
 export const Notion = () => {
@@ -8,7 +8,6 @@ export const Notion = () => {
     error,
     refetch,
   } = useFilterData({ filter: "notion" });
-
 
   if (error) {
     return (
@@ -38,7 +37,7 @@ export const Notion = () => {
         {userData.length > 0 ? (
           userData.map((item) => (
             <div key={item._id} className="flex justify-center">
-              <TestCard
+              <Card
                 _id={item._id}
                 title={item.title}
                 link={item.link}

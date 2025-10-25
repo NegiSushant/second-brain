@@ -1,38 +1,81 @@
 import { ExternalLinkIcon } from "../icons/ExternalLinkIcon";
-import { ImageCard } from "../components/ImageCard";
+import { ImageCard } from "./ImageCard";
 import { Delete } from "../icons/deleteIcon";
+import Swal from "sweetalert2";
 import axios from "axios";
 
 const API = import.meta.env.VITE_API_URL;
 
-interface TestCardProps {
+interface CardProps {
   _id: string;
   title: string;
   link: string;
+  description?: string;
   type?: string;
   tags: string[];
   onDeleteSuccess: () => void;
 }
 
-export default function TestCard({
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton:
+      "bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 ml-2",
+    cancelButton:
+      "bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 mr-2",
+  },
+  buttonsStyling: false,
+});
+
+export default function Card({
   _id,
   title,
   link,
+  description,
   tags,
   onDeleteSuccess,
-}: TestCardProps) {
+}: CardProps) {
   const handleDeleteCard = async () => {
-    try {
-      const response = await axios.delete(`${API}/content/content/${_id}`, {
-        withCredentials: true,
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const response = await axios.delete(
+              `${API}/content/content/${_id}`,
+              { withCredentials: true }
+            );
+            if (response.status === 200) {
+              swalWithBootstrapButtons.fire({
+                title: "Deleted!",
+                text: "Your card has been deleted successfully.",
+                icon: "success",
+              });
+              onDeleteSuccess();
+            }
+          } catch (err) {
+            const errorMsg = err || "Something went wrong!";
+            swalWithBootstrapButtons.fire({
+              title: "Error!",
+              text: errorMsg.toString(),
+              icon: "error",
+            });
+          }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire({
+            title: "Cancelled",
+            text: "Your card is safe :)",
+            icon: "error",
+          });
+        }
       });
-      if (response.status === 200) {
-        alert("Card deleted Successfully!");
-        onDeleteSuccess();
-      }
-    } catch (err) {
-      alert(err);
-    }
   };
 
   const handleExternalLink = () => {
@@ -70,10 +113,7 @@ export default function TestCard({
       <div className="mt-3 space-y-1">
         <h2 className="font-bold text-lg sm:text-xl truncate">{title}</h2>
         <p className="text-sm sm:text-base text-gray-300 leading-snug h-[70px] overflow-y-auto scrollbar-hide">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit
-          cupiditate optio quod similique dolore recusandae necessitatibus nihil
-          iure eum delectus ad totam deserunt culpa exercitationem labore dolor
-          officia, quis dicta.
+          {description}
         </p>
       </div>
 

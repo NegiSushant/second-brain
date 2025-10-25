@@ -15,9 +15,20 @@ import { motion } from "motion/react";
 import { cn } from "../lib/utils";
 import { BrainNav } from "../components/BrainNav";
 import { useLocation, Outlet, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import axios from "axios";
 
 const API = import.meta.env.VITE_API_URL;
+
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton:
+      "bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 ml-2",
+    cancelButton:
+      "bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 mr-2",
+  },
+  buttonsStyling: false,
+});
 
 export function Brain() {
   const location = useLocation();
@@ -82,18 +93,48 @@ export function Brain() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    const response = await axios.post(
-      `${API}/user/signOut`,
-      {},
-      {
-        withCredentials: true,
-      }
-    );
-
-    if (response.status == 200) {
-      alert("Logout successfull");
-      navigate("/");
-    }
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You will be logged out and redirected to the home page!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, logout!",
+        cancelButtonText: "No, stay logged in!",
+        reverseButtons: true,
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const response = await axios.post(
+              `${API}/user/signOut`,
+              {},
+              { withCredentials: true }
+            );
+            if (response.status === 200) {
+              swalWithBootstrapButtons.fire({
+                title: "Logged out!",
+                text: "You have been logged out successfully.",
+                icon: "success",
+              });
+              navigate("/");
+            }
+          } catch (err) {
+            const errorMsg = err || "Something went wrong!";
+            swalWithBootstrapButtons.fire({
+              title: "Error!",
+              text: errorMsg.toString(),
+              icon: "error",
+            });
+          }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire({
+            title: "Cancelled",
+            text: "You are still logged in.",
+            icon: "info",
+          });
+        }
+      });
   };
   return (
     <div

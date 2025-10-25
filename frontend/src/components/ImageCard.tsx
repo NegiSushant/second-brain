@@ -68,8 +68,7 @@ export function ImageCard(props: params) {
             onError={handleError}
           />
         );
-      }
-      else if (
+      } else if (
         props.link.startsWith("https://www.notion.so/") ||
         props.link.startsWith("https://") ||
         props.link.startsWith("https://www.linkedin.com/")
