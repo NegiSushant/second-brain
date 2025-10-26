@@ -43,7 +43,7 @@ export const Notion = () => {
                 link={item.link}
                 type={item.type}
                 tags={item.tags}
-                onDeleteSuccess={refetch}
+                onSuccess={refetch}
               />
             </div>
           ))

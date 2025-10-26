@@ -59,7 +59,7 @@ export const Dashboard = () => {
                   description={item.description}
                   type={item.type}
                   tags={item.tags}
-                  onDeleteSuccess={getUserData}
+                  onSuccess={getUserData}
                 />
               </div>
             ))

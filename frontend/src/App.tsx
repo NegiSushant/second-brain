@@ -3,7 +3,7 @@ import { NavbarDemo } from "./components/Navbar";
 import { Home } from "./pages/Home";
 import { SignUp } from "./pages/SignUp";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import SignIn from "./pages/SingIn";
+import { SignIn } from "./pages/SingIn";
 import { Brain } from "./pages/BrainPage";
 import { Tweet } from "./pages/brain/Tweet";
 import { YouTube } from "./pages/brain/Youtube";
@@ -12,6 +12,7 @@ import { Links } from "./pages/brain/Links";
 import { Code } from "./pages/brain/Code";
 import { Notion } from "./pages/brain/NotionDocs";
 import { Dashboard } from "./pages/brain/Dashboard";
+import { ChatWithBrain } from "./pages/brain/ChatWithBrain";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
               <Route path="links" element={<Links />} />
               <Route path="code" element={<Code />} />
               <Route path="notion" element={<Notion />} />
+              <Route path="chat" element={<ChatWithBrain />} />
             </Route>
           </Route>
         </Routes>

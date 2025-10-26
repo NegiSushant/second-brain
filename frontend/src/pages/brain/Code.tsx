@@ -41,9 +41,10 @@ export const Code = () => {
                 _id={item._id}
                 title={item.title}
                 link={item.link}
+                description={item.description}
                 type={item.type}
                 tags={item.tags}
-                onDeleteSuccess={refetch}
+                onSuccess={refetch}
               />
             </div>
           ))
