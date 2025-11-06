@@ -103,13 +103,20 @@ export default function Card({
     }
   };
 
-  const handleUpdate = (updatedData: typeof data) => {
-    setData({
+  const handleUpdate = (updatedData: {
+    title: string;
+    description: string;
+    link?: string;
+    type: string;
+    tags: string[];
+  }) => {
+    setData((prev) => ({
+      ...prev,
       ...updatedData,
       tags: updatedData.tags.map((t: string | { title?: string }) =>
         typeof t === "string" ? t : t.title || ""
       ),
-    });
+    }));
     setIsEditOpen(false);
     onSuccess();
   };
@@ -173,8 +180,8 @@ export default function Card({
           open={isEditOpen}
           onClose={() => setIsEditOpen(false)}
           content={{ _id, ...data }}
-          // onSuccess={handleUpdate}
-          onSuccess={() => handleUpdate(data)}
+          // onSuccess={() => handleUpdate}
+          onSuccess={handleUpdate}
         />
       )}
     </>

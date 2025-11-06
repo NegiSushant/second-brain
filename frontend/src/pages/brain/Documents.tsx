@@ -30,6 +30,7 @@ export const Documents = () => {
       </div>
     );
   }
+  console.log(userData.length);
 
   return (
     <div className="flex flex-col items-center justify-start w-full h-screen">

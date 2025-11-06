@@ -15,7 +15,13 @@ interface EditContentModalProps {
     type: string;
     tags: string[];
   };
-  onSuccess: () => void;
+  onSuccess: (updatedData: {
+    title: string;
+    description: string;
+    link?: string;
+    type: string;
+    tags: string[];
+  }) => void;
 }
 
 export const EditContentModal = ({
@@ -23,7 +29,8 @@ export const EditContentModal = ({
   onClose,
   content,
   onSuccess: onSuccess,
-}: EditContentModalProps) => {
+}:
+EditContentModalProps) => {
   const [title, setTitle] = useState(content.title);
   const [description, setDescription] = useState(content.description || "");
   const [link, setLink] = useState(content.link || "");
@@ -178,9 +185,12 @@ export const EditContentModal = ({
         formData.append("description", description.trim());
         formData.append("tags", JSON.stringify(cleanTags));
         formData.append("file", file);
+        console.log(content._id);
+
+        
 
         response = await axios.put(
-          `${API}/content/content/${content._id}`,
+          `${API}/content/update/${content._id}`,
           formData,
           {
             withCredentials: true,
@@ -188,7 +198,7 @@ export const EditContentModal = ({
         );
       } else {
         response = await axios.put(
-          `${API}/content/content/${content._id}`,
+          `${API}/content/update/${content._id}`,
           {
             type: selectedType,
             link: link.trim(),
@@ -202,7 +212,13 @@ export const EditContentModal = ({
 
       if (response.status === 200) {
         alert("Content updated successfully");
-        onSuccess();
+        onSuccess({
+          title,
+          description,
+          link,
+          type: selectedType,
+          tags: cleanTags,
+        });
         onClose();
       } else {
         alert("Failed to update content");

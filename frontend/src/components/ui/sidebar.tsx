@@ -145,7 +145,15 @@ export const MobileSidebar = ({
               >
                 <IconX />
               </div>
-              {children}
+              {/* {children} */}
+              <div
+                onClick={(e) => {
+                  const target = e.target as HTMLElement;
+                  if (target.closest("a")) setOpen(false); // ✅ close sidebar if a link was clicked
+                }}
+              >
+                {children}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
