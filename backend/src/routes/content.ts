@@ -66,9 +66,11 @@ async function DeleteFileFromStorage(fileLink: string) {
     const fileName = decodeURIComponent(
       pathname.substring(pathname.lastIndexOf("/") + 1)
     );
+    console.log(fileName);
     const { data, error } = await supabase.storage
-      .from("avatars")
-      .remove([`Mindvault/${fileName}`]);
+      .from("Mindvault")
+      .remove([fileName]);
+    // .remove([`${fileName}`]);
 
     if (error) {
       console.error("Error deleting from Supabase:", error.message);
@@ -82,6 +84,7 @@ async function DeleteFileFromStorage(fileLink: string) {
     return false;
   }
 }
+
 async function removeExistingFileFromStorage(userId: string, id: string) {
   try {
     const existingContent = await content.findOne({
@@ -95,8 +98,8 @@ async function removeExistingFileFromStorage(userId: string, id: string) {
         pathname.substring(pathname.lastIndexOf("/") + 1)
       );
       const { data, error } = await supabase.storage
-        .from("avatars")
-        .remove([`Mindvault/${fileName}`]);
+        .from("Mindvault")
+        .remove([fileName]);
 
       if (error) {
         console.error("Error deleting from Supabase:", error.message);

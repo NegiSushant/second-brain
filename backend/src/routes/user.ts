@@ -92,4 +92,51 @@ userRoute.post("/signOut", authMiddleware, (req: Request, res: Response) => {
   return res.status(200).json({ message: "Logout successful!" });
 });
 
+userRoute.get("/me", authMiddleware, async (req: Request, res: Response) => {
+  try {
+    const userId = req.userId;
+    const userInfo = await user
+      .findOne({ _id: userId })
+      .select("username email _id");
+
+    if (!userInfo) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // transform fields to match frontend
+    const transformedUser = {
+      id: userInfo._id,
+      name: userInfo.username,
+      email: userInfo.email,
+    };
+
+    return res.status(200).json({
+      message: "data found successfully!",
+      user: transformedUser,
+    });
+  } catch (err) {
+    console.error("Error in /me route:", err);
+    return res.status(500).json({
+      message: `Internal server error: ${err}`,
+    });
+  }
+});
+
+// userRoute.get("/me", authMiddleware, async (req: Request, res: Response) => {
+//   try {
+//     const userId = req.userId;
+//     const userInfo = await user.findOne({ _id: userId });
+//     console.log(userInfo);
+//     return res.status(200).json({
+//       message: "data found successfully!",
+//       user: userInfo,
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     return res.status(500).json({
+//       message: `Internal server error: ${err}`,
+//     });
+//   }
+// });
+
 export { userRoute };
