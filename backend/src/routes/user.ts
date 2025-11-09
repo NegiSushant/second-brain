@@ -122,21 +122,5 @@ userRoute.get("/me", authMiddleware, async (req: Request, res: Response) => {
   }
 });
 
-// userRoute.get("/me", authMiddleware, async (req: Request, res: Response) => {
-//   try {
-//     const userId = req.userId;
-//     const userInfo = await user.findOne({ _id: userId });
-//     console.log(userInfo);
-//     return res.status(200).json({
-//       message: "data found successfully!",
-//       user: userInfo,
-//     });
-//   } catch (err) {
-//     console.error(err);
-//     return res.status(500).json({
-//       message: `Internal server error: ${err}`,
-//     });
-//   }
-// });
 
 export { userRoute };
