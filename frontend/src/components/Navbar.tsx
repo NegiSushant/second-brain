@@ -11,7 +11,6 @@ import {
   MobileNavToggle,
   MobileNavMenu,
 } from "./ui/resizable-navbar";
-// "@/components/ui/resizable-navbar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavbarLogo } from "../icons/NavbarIcon";
