@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
+import Swal from "sweetalert2";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -29,8 +30,7 @@ export const EditContentModal = ({
   onClose,
   content,
   onSuccess: onSuccess,
-}:
-EditContentModalProps) => {
+}: EditContentModalProps) => {
   const [title, setTitle] = useState(content.title);
   const [description, setDescription] = useState(content.description || "");
   const [link, setLink] = useState(content.link || "");
@@ -132,37 +132,78 @@ EditContentModalProps) => {
 
   const submitEdit = async () => {
     if (!selectedType || !title.trim()) {
-      alert("Please fill in title and select a type!");
+      Swal.fire({
+        title: "Oops..",
+        icon: "warning",
+        text: "Please fill in title and select a type!",
+        timer: 2500,
+        timerProgressBar: true,
+      });
+      // alert("Please fill in title and select a type!");
       return;
     }
 
     const isFileType = selectedType === "document" || selectedType === "code";
     if (isFileType) {
       if (!file && !content.link) {
-        alert("Please select a file for document or code!");
+        Swal.fire({
+          title: "Oops..",
+          icon: "warning",
+          text: "Please select a file for document or code!",
+          timer: 2500,
+          timerProgressBar: true,
+        });
         return;
       }
 
       if (file) {
         const validationError = validateFile(file, selectedType);
         if (validationError) {
-          alert(validationError);
+          Swal.fire({
+            title: "Wrong File Type!",
+            icon: "error",
+            text: validationError,
+            timer: 2500,
+            timerProgressBar: true,
+          });
+          // alert(validationError);
           return;
         }
       }
     } else {
       if (!link.trim()) {
-        alert("Please provide a link!");
+        Swal.fire({
+          title: "Oops..",
+          icon: "warning",
+          text: "Please provide a link!",
+          timer: 2500,
+          timerProgressBar: true,
+        });
+        // alert("Please provide a link!");
         return;
       }
       try {
         const url = new URL(link.trim());
         if (!/^https?:$/.test(url.protocol)) {
-          alert("Invalid link format — must start with http/https!");
+          Swal.fire({
+            title: "Invalid Link",
+            icon: "error",
+            text: "Invalid link format — must start with http/https!",
+            timer: 2500,
+            timerProgressBar: true,
+          });
+          // alert("Invalid link format — must start with http/https!");
           return;
         }
       } catch {
-        alert("Invalid link format!");
+        Swal.fire({
+          title: "Invalid Link",
+          icon: "error",
+          text: "Invalid link format!",
+          timer: 2500,
+          timerProgressBar: true,
+        });
+        // alert("Invalid link format!");
         return;
       }
     }
@@ -186,8 +227,6 @@ EditContentModalProps) => {
         formData.append("tags", JSON.stringify(cleanTags));
         formData.append("file", file);
         console.log(content._id);
-
-        
 
         response = await axios.put(
           `${API}/content/update/${content._id}`,

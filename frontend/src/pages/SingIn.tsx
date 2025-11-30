@@ -4,6 +4,7 @@ import { Input } from "../components/ui/input";
 import { cn } from "../lib/utils";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -29,11 +30,14 @@ export function SignIn() {
       );
 
       if (response.status === 200) {
-        alert(response.data.message);
         navigate("/brain");
       }
     } catch (err) {
-      alert(err);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: err as string,
+      });
     } finally {
       setIsLoading(false);
     }

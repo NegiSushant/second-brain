@@ -1,4 +1,3 @@
-// import "./App.css";
 import { NavbarDemo } from "./components/Navbar";
 import { Home } from "./pages/Home";
 import { SignUp } from "./pages/SignUp";
@@ -19,9 +18,6 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 function App() {
   return (
     <>
-      {/* <NavbarDemo/> */}
-      {/* <BrowserRouter> */}
-      {/* <NavbarDemo /> */}
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
@@ -48,7 +44,6 @@ function App() {
           </Route>
         </Route>
       </Routes>
-      {/* </BrowserRouter> */}
     </>
   );
 }

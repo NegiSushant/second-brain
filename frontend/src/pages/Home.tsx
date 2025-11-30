@@ -1,6 +1,5 @@
 import React from "react";
 import { motion } from "framer-motion";
-
 import {
   LightBulbIcon,
   Squares2X2Icon,
@@ -11,7 +10,6 @@ import Testimonials from "../components/Testimonial";
 import Footer from "../components/Footer";
 import Working from "../components/Working";
 
-// TypeScript Interfaces
 interface Feature {
   title: string;
   description: string;
@@ -125,7 +123,8 @@ export const Home = () => {
 
       {/* How It Works */}
       <Working />
-
+      
+      {/*Testimonials */}
       <Testimonials />
 
       {/* Footer */}

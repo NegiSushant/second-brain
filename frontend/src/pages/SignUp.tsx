@@ -4,6 +4,7 @@ import { Label } from "../components/ui/label";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -35,11 +36,19 @@ export const SignUp = () => {
       });
 
       if (response.status === 200) {
-        alert(response.data.message);
         navigate("/signin");
+        Swal.fire({
+          icon: "success",
+          title: "Oops...",
+          text: response.data.message,
+        });
       }
     } catch (err) {
-      alert(err);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: err as string,
+      });
     } finally {
       setIsLoading(false);
     }

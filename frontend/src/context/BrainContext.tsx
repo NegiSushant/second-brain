@@ -28,5 +28,3 @@ export const useBrainContext = () => {
   }
   return context;
 };
-
-// export default { BrainProvider, useBrainContext };
