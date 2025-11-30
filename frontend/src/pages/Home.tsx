@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { CheckIcon } from "@heroicons/react/24/solid";
+
 import {
   LightBulbIcon,
   Squares2X2Icon,
@@ -19,18 +19,7 @@ interface Feature {
   icon: React.ReactNode;
 }
 
-interface PricingPlan {
-  name: string;
-  monthly: number;
-  annual: number;
-  features: string[];
-  highlighted?: boolean;
-  disabled?: boolean;
-}
-
 export const Home = () => {
-  // Pricing toggle state
-  const [annual, setAnnual] = useState(false);
   // Features data
   const features: Feature[] = [
     {
@@ -56,34 +45,6 @@ export const Home = () => {
       description: "Express ideas with clarity and share easily",
       benefits: ["Export & share", "Presentations", "Collaborate with team"],
       icon: <MegaphoneIcon className="w-10 h-10 text-purple-600" />,
-    },
-  ];
-
-  const pricingPlans: PricingPlan[] = [
-    {
-      name: "Free",
-      monthly: 0,
-      annual: 0,
-      features: ["Up to 3 vaults", "Basic search", "Community support"],
-    },
-    {
-      name: "Pro",
-      monthly: 19,
-      annual: 182, // 20% discount
-      features: [
-        "Unlimited vaults",
-        "Advanced search",
-        "Priority support",
-        "Custom themes",
-      ],
-      highlighted: true,
-    },
-    {
-      name: "Enterprise",
-      monthly: 0,
-      annual: 0,
-      features: ["Custom integrations", "Dedicated support", "SLAs"],
-      disabled: true,
     },
   ];
 
@@ -166,98 +127,6 @@ export const Home = () => {
       <Working />
 
       <Testimonials />
-
-      {/* Pricing */}
-      <section id="pricing" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">Pricing</h2>
-          <div className="flex justify-center mb-6">
-            <button
-              onClick={() => setAnnual(false)}
-              className={`px-4 py-2 border ${
-                !annual ? "bg-purple-100 border-purple-500" : "bg-white"
-              } rounded-l transition`}
-            >
-              Monthly
-            </button>
-            <button
-              onClick={() => setAnnual(true)}
-              className={`px-4 py-2 border ${
-                annual ? "bg-purple-100 border-purple-500" : "bg-white"
-              } rounded-r transition`}
-            >
-              Annual
-            </button>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {pricingPlans.map((plan, idx) => (
-              <motion.div
-                key={idx}
-                className={`p-6 rounded-xl shadow text-center ${
-                  plan.highlighted
-                    ? "border-2 border-purple-600"
-                    : "border border-gray-200"
-                } ${plan.disabled ? "opacity-60 cursor-not-allowed" : ""}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.2 }}
-              >
-                <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
-                <p className="text-3xl font-bold mb-4">
-                  ${annual ? plan.annual : plan.monthly}
-                  <span className="text-base font-normal">/mo</span>
-                </p>
-                <ul className="mb-4 space-y-1">
-                  {plan.features.map((f, i) => (
-                    <li
-                      key={i}
-                      className="flex items-center justify-center gap-2"
-                    >
-                      <CheckIcon className="w-5 h-5 text-purple-600" /> {f}
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  disabled={plan.disabled}
-                  className={`px-4 py-2 rounded ${
-                    plan.disabled
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-purple-600 text-white hover:bg-purple-700 transition"
-                  }`}
-                >
-                  Select Plan
-                </button>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 bg-teal-400 text-white">
-        <div className="max-w-xl mx-auto text-center space-y-4">
-          <h2 className="text-3xl font-bold">Get Early Access</h2>
-          <form
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-            onSubmit={(e) => {
-              e.preventDefault();
-              alert("Submitted!");
-            }}
-          >
-            <input
-              type="email"
-              placeholder="Your email"
-              required
-              className="px-4 py-2 rounded text-gray-800 flex-1"
-            />
-            <button className="px-6 py-2 rounded bg-purple-600 hover:bg-purple-700 transition">
-              Submit
-            </button>
-          </form>
-          <p className="text-sm">We respect your data – no spam, ever.</p>
-        </div>
-      </section>
 
       {/* Footer */}
       <Footer />

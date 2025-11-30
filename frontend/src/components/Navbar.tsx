@@ -1,5 +1,3 @@
-"use client";
-// import { IconBrain } from "@tabler/icons-react";
 import {
   Navbar,
   NavBody,
