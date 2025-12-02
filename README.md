@@ -1,1 +1,1 @@
-backend_url: https://second-brain-g04x.onrender.com/
+url: https://mindvault01.vercel.app
