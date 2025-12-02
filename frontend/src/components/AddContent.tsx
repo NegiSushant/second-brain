@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { useBrainContext } from "../context/BrainContext";
+import Swal from "sweetalert2";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -104,7 +105,14 @@ export const AddContentModal = ({
 
     const error = validateFile(selectedFile, selectedType!);
     if (error) {
-      alert(error);
+      Swal.fire({
+        title: "Oops..",
+        icon: "warning",
+        text: error,
+        timer: 2500,
+        timerProgressBar: true,
+      });
+      // alert(error);
       if (fileRef.current) fileRef.current.value = "";
       setFile(null);
       return;
@@ -115,35 +123,77 @@ export const AddContentModal = ({
 
   const submitContent = async () => {
     if (!selectedType || !title.trim()) {
-      alert("Please fill in title and select a type!");
+      Swal.fire({
+        title: "Oops..",
+        icon: "warning",
+        text: "Please fill in title and select a type!",
+        timer: 2500,
+        timerProgressBar: true,
+      });
+      // alert("Please fill in title and select a type!");
       return;
     }
 
     const isFileType = selectedType === "document" || selectedType === "code";
     if (isFileType) {
       if (!file) {
-        alert("Please select a file for document or code!");
+        Swal.fire({
+          title: "Oops..",
+          icon: "warning",
+          text: "Please select a file for document or code!",
+          timer: 2500,
+          timerProgressBar: true,
+        });
+        // alert("Please select a file for document or code!");
         return;
       }
 
       const validationError = validateFile(file, selectedType);
       if (validationError) {
-        alert(validationError);
+        Swal.fire({
+          title: "Wrong File Type!",
+          icon: "error",
+          text: validationError,
+          timer: 2500,
+          timerProgressBar: true,
+        });
+        // alert(validationError);
         return;
       }
     } else {
       if (!link.trim()) {
-        alert("Please provide a link!");
+        Swal.fire({
+          title: "Oops..",
+          icon: "warning",
+          text: "Please provide a link!",
+          timer: 2500,
+          timerProgressBar: true,
+        });
+        // alert("Please provide a link!");
         return;
       }
       try {
         const url = new URL(link.trim());
         if (!/^https?:$/.test(url.protocol)) {
-          alert("Invalid link format — must start with http/https!");
+          Swal.fire({
+            title: "Invalid Link",
+            icon: "error",
+            text: "Invalid link format — must start with http/https!",
+            timer: 2500,
+            timerProgressBar: true,
+          });
+          // alert("Invalid link format — must start with http/https!");
           return;
         }
       } catch {
-        alert("Invalid link format!");
+        Swal.fire({
+          title: "Invalid Link",
+          icon: "error",
+          text: "Invalid link format!",
+          timer: 2500,
+          timerProgressBar: true,
+        });
+        // alert("Invalid link format!");
         return;
       }
     }
@@ -185,7 +235,7 @@ export const AddContentModal = ({
       }
 
       if (response.status === 200) {
-        alert("✅ " + (response.data.message || "Content added successfully"));
+        // alert("✅ " + (response.data.message || "Content added successfully"));
         setTitle("");
         setDescription("");
         setLink("");
@@ -194,12 +244,27 @@ export const AddContentModal = ({
         setFile(null);
         if (fileRef.current) fileRef.current.value = "";
         triggerRefresh();
+        Swal.fire({
+          title: "Updated!",
+          text: response.data.message || "Content added successfully",
+          icon: "success",
+        });
         onClose();
       } else {
-        alert("❌ " + (response.data.message || "Failed to save content"));
+        Swal.fire({
+          title: "Faild!",
+          text: response.data.message || "Failed to save content",
+          icon: "error",
+        });
+        // alert("❌ " + (response.data.message || "Failed to save content"));
       }
     } catch (err) {
-      alert("Error: " + err);
+      // alert("Error: " + err);
+      Swal.fire({
+        title: "Faild!",
+        text: err as string,
+        icon: "error",
+      });
     } finally {
       setLoading(false);
     }

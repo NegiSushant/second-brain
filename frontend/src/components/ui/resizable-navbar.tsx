@@ -1,4 +1,3 @@
-"use client";
 import { cn } from "../../lib/utils";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import {
@@ -194,8 +193,8 @@ export const MobileNavMenu = ({
   children,
   className,
   isOpen,
-  // onClose,
-}: MobileNavMenuProps) => {
+}: // onClose,
+MobileNavMenuProps) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -241,9 +240,7 @@ export const NavbarLogo = () => {
         width={30}
         height={30}
       />
-      <span className="font-medium text-black dark:text-white">
-        MindVault
-      </span>
+      <span className="font-medium text-black dark:text-white">MindVault</span>
     </a>
   );
 };

@@ -121,7 +121,14 @@ export const EditContentModal = ({
 
     const error = validateFile(selectedFile, selectedType!);
     if (error) {
-      alert(error);
+      Swal.fire({
+        title: "Oops..",
+        icon: "warning",
+        text: error,
+        timer: 2500,
+        timerProgressBar: true,
+      });
+      // alert(error);
       if (fileRef.current) fileRef.current.value = "";
       setFile(null);
       return;
@@ -216,6 +223,19 @@ export const EditContentModal = ({
       : [];
 
     try {
+      const result = await Swal.fire({
+        title: "Confirm Update",
+        text: "Are you sure you want to update this content?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, update it!",
+      });
+
+      // If user cancelled, stop execution
+      if (!result.isConfirmed) return;
+
       setLoading(true);
       let response;
 
@@ -250,7 +270,6 @@ export const EditContentModal = ({
       }
 
       if (response.status === 200) {
-        alert("Content updated successfully");
         onSuccess({
           title,
           description,
@@ -258,12 +277,27 @@ export const EditContentModal = ({
           type: selectedType,
           tags: cleanTags,
         });
+        Swal.fire({
+          title: "Updated!",
+          text: "Content updated successfully.",
+          icon: "success",
+        });
         onClose();
       } else {
-        alert("Failed to update content");
+        Swal.fire({
+          title: "Faild!",
+          text: "Failed to update content",
+          icon: "error",
+        });
+        // alert("Failed to update content");
       }
     } catch (err) {
-      alert("Error: " + err);
+      Swal.fire({
+        title: "Faild!",
+        text: err as string,
+        icon: "error",
+      });
+      // alert("Error: " + err);
     } finally {
       setLoading(false);
     }

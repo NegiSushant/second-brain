@@ -5,11 +5,13 @@ import { cn } from "../lib/utils";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useAuth } from "../context/AuthContext";
 
 const API = import.meta.env.VITE_API_URL;
 
 export function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
+  const { refreshUser } = useAuth();
 
   const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,6 +32,7 @@ export function SignIn() {
       );
 
       if (response.status === 200) {
+        await refreshUser();
         navigate("/brain");
       }
     } catch (err) {
