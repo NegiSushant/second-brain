@@ -2,7 +2,15 @@ import { Router, Request, Response } from "express";
 import { authMiddleware } from "../middleware";
 import { content, LinkModel, user } from "../db";
 import RandomLinkGenerator from "../utils";
+
 const brainRoute = Router();
+
+// Interface for the cleaned output
+interface CleanResource {
+  title: string;
+  description: string;
+  source: string;
+}
 
 brainRoute.post(
   "/share",
@@ -85,4 +93,32 @@ brainRoute.get(
   }
 );
 
+// Function to extract only the fields we want
+function extractResources(data: any[]): CleanResource[] {
+  return data.map((item) => ({
+    title: item.title ?? "Untitled",
+    description: item.description ?? "",
+    source: item.link ?? "",
+  }));
+}
+
+brainRoute.post("/ask", authMiddleware, async (req: Request, res: Response) => {
+  try {
+    const query = req.query.query as string;
+    const user_id = req.userId;
+
+    const userContent = await content.find({ userId: user_id });
+
+    const cleanedResources: CleanResource[] = extractResources(userContent);
+
+    console.log(`query: ${query}`);
+    console.log(`usercontent: ${userContent}`);
+    console.log(`Cleaned user date: ${JSON.stringify(cleanedResources)}`);
+    return res.json({ query: query });
+  } catch (e) {
+    console.log(req);
+    console.log(e);
+    return res.json({ message: e });
+  }
+});
 export { brainRoute };
