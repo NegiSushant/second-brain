@@ -2,8 +2,11 @@ import { Router, Request, Response } from "express";
 import { authMiddleware } from "../middleware";
 import { content, LinkModel, user } from "../db";
 import RandomLinkGenerator from "../utils";
+import { GoogleGenAI } from "@google/genai";
+import { APIKEY, EMBDMODEL } from "../config";
 
 const brainRoute = Router();
+const ai = new GoogleGenAI({apiKey: APIKEY})
 
 // Interface for the cleaned output
 interface CleanResource {
@@ -102,6 +105,35 @@ function extractResources(data: any[]): CleanResource[] {
   }));
 }
 
+const createEmbeding = async (data: CleanResource[]) => {
+  try {
+    const embeding = []
+    let i = 1;
+    for(const item of data){
+      i = i+1;
+      console.log(i)
+      const textToEmbed = `${item.title}\n${item.description}`;
+
+      const embeding_response = await ai.models.embedContent({
+        model: EMBDMODEL,
+        contents: textToEmbed
+      })
+      embeding.push({
+        title: item.title,
+        description: item.description,
+        source: item.source,
+        embedding: embeding_response.embeddings,
+      });
+    }
+    console.log(`embeding data: ${embeding}`)
+    return embeding
+    
+  } catch (e) {
+    console.error(`embeding error: ${e}`)
+    return e as string;
+  }
+};
+
 brainRoute.post("/ask", authMiddleware, async (req: Request, res: Response) => {
   try {
     const query = req.query.query as string;
@@ -110,9 +142,12 @@ brainRoute.post("/ask", authMiddleware, async (req: Request, res: Response) => {
     const userContent = await content.find({ userId: user_id });
 
     const cleanedResources: CleanResource[] = extractResources(userContent);
+    console.log(`type of cleaneddata: ${typeof cleanedResources}`);
+
+    const embending = await createEmbeding(cleanedResources);
 
     console.log(`query: ${query}`);
-    console.log(`usercontent: ${userContent}`);
+    // console.log(`usercontent: ${userContent}`);
     console.log(`Cleaned user date: ${JSON.stringify(cleanedResources)}`);
     return res.json({ query: query });
   } catch (e) {
