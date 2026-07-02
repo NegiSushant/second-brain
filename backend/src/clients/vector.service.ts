@@ -1,5 +1,6 @@
 import { supabase } from "./supabase.client";
 import { Embedings } from "../routes/azureOpenAi";
+import {OpenAIChatModel} from "../routes/OpenAIModel"
 
 // Interface for the cleaned output
 interface CleanResource {
@@ -9,7 +10,7 @@ interface CleanResource {
 }
 
 export class VectorService {
-  private embeddingService = new Embedings();
+  private embeddingService = new OpenAIChatModel();
 
   async createEmbeding(userId: string, data: CleanResource[]) {
     try {
