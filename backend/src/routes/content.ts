@@ -3,9 +3,10 @@ import { authMiddleware } from "../middleware";
 import { content, Tag } from "../db";
 import { Types } from "mongoose";
 import multer from "multer";
-import { createClient } from "@supabase/supabase-js";
+// import { createClient } from "@supabase/supabase-js";
 import path from "path";
 import { STORAGE_KEY, STORAGE_URL } from "../config";
+import { supabase } from "../clients/supabase.client";
 import { id } from "zod/v4/locales";
 
 const contentRoute = Router();
@@ -35,7 +36,7 @@ const FORBIDDEN_EXTENSIONS = new Set([
   ".cpl",
 ]);
 
-const supabase = createClient(STORAGE_URL, STORAGE_KEY);
+// const supabase = createClient(STORAGE_URL, STORAGE_KEY);
 
 async function uploadFile(file: Express.Multer.File) {
   if (!file) throw new Error("No file provided!");
@@ -64,7 +65,7 @@ async function DeleteFileFromStorage(fileLink: string) {
   try {
     const pathname = new URL(fileLink).pathname;
     const fileName = decodeURIComponent(
-      pathname.substring(pathname.lastIndexOf("/") + 1)
+      pathname.substring(pathname.lastIndexOf("/") + 1),
     );
     console.log(fileName);
     const { data, error } = await supabase.storage
@@ -95,7 +96,7 @@ async function removeExistingFileFromStorage(userId: string, id: string) {
     if (ExistingLink && typeof ExistingLink === "string") {
       const pathname = new URL(ExistingLink).pathname;
       const fileName = decodeURIComponent(
-        pathname.substring(pathname.lastIndexOf("/") + 1)
+        pathname.substring(pathname.lastIndexOf("/") + 1),
       );
       const { data, error } = await supabase.storage
         .from("Mindvault")
@@ -185,10 +186,10 @@ contentRoute.post(
             const tagDoc = await Tag.findOneAndUpdate(
               { title: tagTitle.trim().toLowerCase() },
               { title: tagTitle.trim().toLowerCase() },
-              { upsert: true, new: true }
+              { upsert: true, new: true },
             );
             return tagDoc._id;
-          })
+          }),
         );
       }
 
@@ -210,7 +211,7 @@ contentRoute.post(
         message: `Internal server error: ${err}`,
       });
     }
-  }
+  },
 );
 
 contentRoute.put(
@@ -249,7 +250,7 @@ contentRoute.put(
           }
           const isExistingFileRemove = await removeExistingFileFromStorage(
             userId,
-            contentId
+            contentId,
           );
           if (isExistingFileRemove) {
             link = await uploadFile(req.file);
@@ -291,10 +292,10 @@ contentRoute.put(
             const tagDoc = await Tag.findOneAndUpdate(
               { title: tagTitle.trim().toLowerCase() },
               { title: tagTitle.trim().toLowerCase() },
-              { upsert: true, new: true }
+              { upsert: true, new: true },
             );
             return tagDoc._id;
-          })
+          }),
         );
       }
 
@@ -309,7 +310,7 @@ contentRoute.put(
             tags: tagIds,
           },
         },
-        { new: false }
+        { new: false },
       );
 
       return res.status(200).json({ message: "Content updated successfully!" });
@@ -318,7 +319,7 @@ contentRoute.put(
         message: `Internal server error: ${err}`,
       });
     }
-  }
+  },
 );
 
 contentRoute.delete(
@@ -372,7 +373,7 @@ contentRoute.delete(
         message: `Internal server error: ${err}!`,
       });
     }
-  }
+  },
 );
 
 contentRoute.get(
@@ -400,7 +401,7 @@ contentRoute.get(
         message: `Internal server error: ${err}`,
       });
     }
-  }
+  },
 );
 
 contentRoute.get(
@@ -430,7 +431,7 @@ contentRoute.get(
         message: `Internal server error: ${err}`,
       });
     }
-  }
+  },
 );
 
 contentRoute.get(
@@ -449,7 +450,7 @@ contentRoute.get(
         message: `Internal server error: ${err}`,
       });
     }
-  }
+  },
 );
 
 export { contentRoute };

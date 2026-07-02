@@ -3,16 +3,28 @@ import { authMiddleware } from "../middleware";
 import { content, LinkModel, user } from "../db";
 import RandomLinkGenerator from "../utils";
 import { GoogleGenAI } from "@google/genai";
-import { APIKEY, EMBDMODEL } from "../config";
+// import { ChatModel, Embedings } from "./azureOpenAi";
+import { OpenAIChatModel } from "./OpenAIModel";
+import { supabase } from "../clients/supabase.client";
 
 const brainRoute = Router();
-const ai = new GoogleGenAI({apiKey: APIKEY})
+// const ai = new GoogleGenAI({ apiKey: APIKEY });
+// const embeddingService = new Embedings();
+const openAIService = new OpenAIChatModel();
 
 // Interface for the cleaned output
 interface CleanResource {
   title: string;
   description: string;
   source: string;
+}
+
+interface MatchDocument {
+  id: string;
+  title: string;
+  description: string;
+  source: string;
+  similarity: number;
 }
 
 brainRoute.post(
@@ -55,7 +67,7 @@ brainRoute.post(
         message: `Internal server error:${err}!`,
       });
     }
-  }
+  },
 );
 
 brainRoute.get(
@@ -93,7 +105,7 @@ brainRoute.get(
         message: `Internal server error: ${err}!`,
       });
     }
-  }
+  },
 );
 
 // Function to extract only the fields we want
@@ -105,55 +117,116 @@ function extractResources(data: any[]): CleanResource[] {
   }));
 }
 
-const createEmbeding = async (data: CleanResource[]) => {
+const createEmbeding = async (userId: string, data: CleanResource[]) => {
   try {
-    const embeding = []
-    let i = 1;
-    for(const item of data){
-      i = i+1;
-      console.log(i)
-      const textToEmbed = `${item.title}\n${item.description}`;
+    const texts = data.map((item) => `${item.title}\n${item.description}`);
 
-      const embeding_response = await ai.models.embedContent({
-        model: EMBDMODEL,
-        contents: textToEmbed
-      })
-      embeding.push({
-        title: item.title,
-        description: item.description,
-        source: item.source,
-        embedding: embeding_response.embeddings,
-      });
+    // const vectors = await embeddingService.embedDocuments(texts);
+    const vectors = await openAIService.embedDocuments(texts);
+
+    // 3️⃣ Merge embeddings with metadata
+    const embeddingData = data.map((item, index) => ({
+      user_id: userId,
+      title: item.title,
+      description: item.description,
+      source: item.source,
+      embedding: vectors[index], // match by index
+    }));
+
+    console.log(`Embedding generation Successfully!`);
+
+    const { error } = await supabase.from("documents").insert(embeddingData);
+
+    if (error) {
+      console.error("Supabase insert error:", error);
+      // throw error;
+      return false;
     }
-    console.log(`embeding data: ${embeding}`)
-    return embeding
-    
+    console.log("Embeddings stored successfully!");
+    return true;
   } catch (e) {
-    console.error(`embeding error: ${e}`)
-    return e as string;
+    console.error(`embeding error: ${e}`);
+    // return e as string;
+    return false;
   }
 };
+
+const searchSimilar = async (userId: string, query: number[]) => {
+  const { data, error } = await supabase.rpc("match_documents", {
+    query_embedding: query,
+    match_user_id: userId,
+    match_count: 3,
+  });
+
+  if (error) {
+    console.error("Similarity search error:", error);
+    throw error;
+  }
+
+  return data;
+};
+
+brainRoute.get(
+  "/DataReady",
+  authMiddleware,
+  async (req: Request, res: Response) => {
+    const user_id = req.userId as string;
+    try {
+    } catch (e) {}
+  },
+);
 
 brainRoute.post("/ask", authMiddleware, async (req: Request, res: Response) => {
   try {
     const query = req.query.query as string;
-    const user_id = req.userId;
+    const user_id = req.userId as string;
 
     const userContent = await content.find({ userId: user_id });
 
     const cleanedResources: CleanResource[] = extractResources(userContent);
     console.log(`type of cleaneddata: ${typeof cleanedResources}`);
 
-    const embending = await createEmbeding(cleanedResources);
+    const embending = await createEmbeding(user_id, cleanedResources);
 
-    console.log(`query: ${query}`);
-    // console.log(`usercontent: ${userContent}`);
-    console.log(`Cleaned user date: ${JSON.stringify(cleanedResources)}`);
-    return res.json({ query: query });
+    if (!embending) {
+      return res.status(500).json({ message: "Embedding failed" });
+    }
+
+    //create query embeding
+    // const embedUserQuery = await embeddingService.embedQuery(query);
+    const embedUserQuery = await openAIService.embedQuery(query);
+
+    console.log("User query embedding created successfully!");
+    //search for the similarities
+    const matches: MatchDocument[] = await searchSimilar(
+      user_id,
+      embedUserQuery,
+    );
+
+    console.log("Simiarity matches successfully!");
+
+    const context = matches
+      .map((doc) => `${doc.title}\n${doc.description}`)
+      .join("\n\n");
+
+    // const chatModel = new ChatModel();
+
+    const answer = await openAIService.generateResponse(context, query);
+
+    return res.json({
+      query,
+      answer,
+      sources: matches.map((m) => m.source),
+    });
+    // console.log(`query: ${query}`);
+    // // console.log(`usercontent: ${userContent}`);
+    // console.log(`Cleaned user date: ${JSON.stringify(cleanedResources)}`);
+    // return res.json({ query: query });
   } catch (e) {
     console.log(req);
     console.log(e);
     return res.json({ message: e });
   }
 });
+
 export { brainRoute };
