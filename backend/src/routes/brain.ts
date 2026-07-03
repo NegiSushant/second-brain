@@ -166,13 +166,27 @@ const searchSimilar = async (userId: string, query: number[]) => {
   return data;
 };
 
-brainRoute.get(
+brainRoute.post(
   "/DataReady",
   authMiddleware,
   async (req: Request, res: Response) => {
     const user_id = req.userId as string;
     try {
-    } catch (e) {}
+      //extracting the data from the user
+      const userContent = await content.find({ userId: user_id });
+      const cleanedResources: CleanResource[] = extractResources(userContent);
+
+      const embedding = await createEmbeding(user_id, cleanedResources);
+      if (!embedding) {
+        return res.status(500).json({ message: "Embedding failed" });
+      }
+      return res
+        .status(200)
+        .json({ message: "Embedding created successfully!" });
+    } catch (e) {
+      console.log(e);
+      return res.json({ message: e });
+    }
   },
 );
 
@@ -181,22 +195,9 @@ brainRoute.post("/ask", authMiddleware, async (req: Request, res: Response) => {
     const query = req.query.query as string;
     const user_id = req.userId as string;
 
-    const userContent = await content.find({ userId: user_id });
-
-    const cleanedResources: CleanResource[] = extractResources(userContent);
-    console.log(`type of cleaneddata: ${typeof cleanedResources}`);
-
-    const embending = await createEmbeding(user_id, cleanedResources);
-
-    if (!embending) {
-      return res.status(500).json({ message: "Embedding failed" });
-    }
-
     //create query embeding
-    // const embedUserQuery = await embeddingService.embedQuery(query);
     const embedUserQuery = await openAIService.embedQuery(query);
 
-    console.log("User query embedding created successfully!");
     //search for the similarities
     const matches: MatchDocument[] = await searchSimilar(
       user_id,
@@ -210,7 +211,6 @@ brainRoute.post("/ask", authMiddleware, async (req: Request, res: Response) => {
       .join("\n\n");
 
     // const chatModel = new ChatModel();
-
     const answer = await openAIService.generateResponse(context, query);
 
     return res.json({
@@ -218,10 +218,6 @@ brainRoute.post("/ask", authMiddleware, async (req: Request, res: Response) => {
       answer,
       sources: matches.map((m) => m.source),
     });
-    // console.log(`query: ${query}`);
-    // // console.log(`usercontent: ${userContent}`);
-    // console.log(`Cleaned user date: ${JSON.stringify(cleanedResources)}`);
-    // return res.json({ query: query });
   } catch (e) {
     console.log(req);
     console.log(e);

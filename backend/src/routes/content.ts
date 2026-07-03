@@ -7,7 +7,6 @@ import multer from "multer";
 import path from "path";
 import { STORAGE_KEY, STORAGE_URL } from "../config";
 import { supabase } from "../clients/supabase.client";
-import { id } from "zod/v4/locales";
 
 const contentRoute = Router();
 
@@ -200,6 +199,8 @@ contentRoute.post(
         description: description || "",
         tags: tagIds,
         userId: id,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
       });
 
       return res.status(200).json({
@@ -308,6 +309,7 @@ contentRoute.put(
             link,
             type,
             tags: tagIds,
+            updatedAt: Date.now(),
           },
         },
         { new: false },
