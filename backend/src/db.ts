@@ -1,6 +1,6 @@
 import mongoose, { model, Schema, Types } from "mongoose";
 import { DB_URL } from "./config";
-import { string } from "zod";
+import { date, string } from "zod";
 
 let cached = (global as any).mongooseConnection;
 
@@ -56,6 +56,8 @@ const ContentSchema = new Schema({
   description: { type: string },
   tags: [{ type: Types.ObjectId, ref: "Tag" }],
   userId: { type: Types.ObjectId, ref: "UserSchema", required: true },
+  createdAt: { type: date },
+  updatedAt: { type: date },
 });
 
 const tagSchema = new Schema({
