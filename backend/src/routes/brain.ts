@@ -139,7 +139,6 @@ const createEmbeding = async (userId: string, data: CleanResource[]) => {
 
     if (error) {
       console.error("Supabase insert error:", error);
-      // throw error;
       return false;
     }
     console.log("Embeddings stored successfully!");

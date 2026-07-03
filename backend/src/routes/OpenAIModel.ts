@@ -40,7 +40,6 @@ export class OpenAIChatModel {
       model: this.model,
     });
     return response.choices[0].message.content as string;
-    // return response.content as string;
   }
 
   /** Create embedding for single query */
