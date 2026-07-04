@@ -4,8 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --shadow-input: 0px 2px 3px -1px rgba(0, 0, 0, 0.1),
-    0px 1px 0px 0px rgba(25, 28, 33, 0.02),
+  --shadow-input:
+    0px 2px 3px -1px rgba(0, 0, 0, 0.1), 0px 1px 0px 0px rgba(25, 28, 33, 0.02),
     0px 0px 0px 1px rgba(25, 28, 33, 0.08);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -120,4 +120,131 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.markdown-body {
+  font-size: 15px;
+  line-height: 1.75;
+  color: inherit;
+  word-break: break-word;
+}
+
+/* Paragraph */
+
+.markdown-body p {
+  margin: 0.75rem 0;
+}
+
+/* Headings */
+
+.markdown-body h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 1.5rem 0 1rem;
+}
+
+.markdown-body h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 1.4rem 0 0.9rem;
+}
+
+.markdown-body h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 1.2rem 0 0.8rem;
+}
+
+.markdown-body h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 1rem 0 0.7rem;
+}
+
+/* Lists */
+
+.markdown-body ul {
+  list-style: disc;
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.markdown-body ol {
+  list-style: decimal;
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.markdown-body li {
+  margin: 0.35rem 0;
+}
+
+/* Links */
+
+.markdown-body a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.markdown-body a:hover {
+  opacity: 0.8;
+}
+
+/* Inline Code */
+
+.markdown-body code {
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 5px;
+  font-size: 0.9em;
+}
+
+/* Code Blocks */
+
+.markdown-body pre {
+  background: #171717;
+  color: #ffffff;
+  padding: 1rem;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.markdown-body pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+/* Blockquote */
+
+.markdown-body blockquote {
+  border-left: 4px solid #d4d4d4;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Tables */
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid #d4d4d4;
+  padding: 10px;
+}
+
+.markdown-body th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+.markdown-body hr {
+  margin: 1.5rem 0;
 }

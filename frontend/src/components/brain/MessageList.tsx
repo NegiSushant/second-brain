@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import type { ChatMessage } from "../../types/chat";
 import MessageBubble from "./MessageBubble";
 import ThinkingBubble from "./ThinkingBubble";
+import MessageSources from "./MessageSources";
 
 interface MessageListProps {
   messages: ChatMessage[];
@@ -22,8 +23,22 @@ export default function MessageList({
 
   return (
     <div className="flex flex-col gap-4 px-6 py-6">
-      {messages.map((message) => (
+      {/* {messages.map((message) => (
         <MessageBubble key={message.id} message={message} />
+      ))} */}
+
+      {messages.map((message) => (
+        <div key={message.id} className="space-y-2">
+          <MessageBubble message={message} />
+
+          {message.role === "assistant" &&
+            message.sources &&
+            message.sources.length > 0 && (
+              <div className="ml-2">
+                <MessageSources sources={message.sources} />
+              </div>
+            )}
+        </div>
       ))}
 
       {/* <div ref={bottomRef} /> */}
