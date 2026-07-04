@@ -2,21 +2,19 @@ import { Router, Request, Response } from "express";
 import { authMiddleware } from "../middleware";
 import { content, LinkModel, user } from "../db";
 import RandomLinkGenerator from "../utils";
-import { GoogleGenAI } from "@google/genai";
-// import { ChatModel, Embedings } from "./azureOpenAi";
 import { OpenAIChatModel } from "./OpenAIModel";
 import { supabase } from "../clients/supabase.client";
 
 const brainRoute = Router();
-// const ai = new GoogleGenAI({ apiKey: APIKEY });
-// const embeddingService = new Embedings();
 const openAIService = new OpenAIChatModel();
 
 // Interface for the cleaned output
 interface CleanResource {
+  content_id: string;
   title: string;
   description: string;
   source: string;
+  updatedAt: Date;
 }
 
 interface MatchDocument {
@@ -111,33 +109,81 @@ brainRoute.get(
 // Function to extract only the fields we want
 function extractResources(data: any[]): CleanResource[] {
   return data.map((item) => ({
+    content_id: item._id,
     title: item.title ?? "Untitled",
     description: item.description ?? "",
     source: item.link ?? "",
+    updatedAt: item.updatedAt,
   }));
 }
 
 const createEmbeding = async (userId: string, data: CleanResource[]) => {
   try {
-    const texts = data.map((item) => `${item.title}\n${item.description}`);
+    // get existing embeding
+    const { data: existingEmbeddings, error } = await supabase
+      .from("documents")
+      .select("content_id, created_at")
+      .eq("user_id", userId);
+
+    if (error) {
+      console.log(error);
+      return false;
+    }
+
+    const embeddingMap = new Map(
+      existingEmbeddings.map((item) => [item.content_id, item.created_at]),
+    );
+
+    // Filter content
+    const pendingContent = data.filter((item) => {
+      const embeddingDate = embeddingMap.get(item.content_id);
+
+      if (!embeddingDate) {
+        // New content
+        return true;
+      }
+
+      return item.updatedAt > embeddingDate;
+    });
+
+    if (pendingContent.length === 0) {
+      return true;
+    }
+
+    const texts = pendingContent.map(
+      (item) => `${item.title}\n${item.description}`,
+    );
 
     // const vectors = await embeddingService.embedDocuments(texts);
     const vectors = await openAIService.embedDocuments(texts);
 
-    // 3️⃣ Merge embeddings with metadata
+    // Merge embeddings with metadata
     const embeddingData = data.map((item, index) => ({
       user_id: userId,
       title: item.title,
       description: item.description,
       source: item.source,
       embedding: vectors[index], // match by index
+      content_id: item.content_id,
+      created_at: new Date(),
     }));
 
     console.log(`Embedding generation Successfully!`);
 
-    const { error } = await supabase.from("documents").insert(embeddingData);
+    // Delete old embeddings for updated content
+    const ids = pendingContent.map((x) => x.content_id);
 
-    if (error) {
+    await supabase
+      .from("documents")
+      .delete()
+      .eq("user_id", userId)
+      .in("content_id", ids);
+
+    const { error: insertError } = await supabase
+      .from("documents")
+      .insert(embeddingData);
+
+    if (insertError) {
       console.error("Supabase insert error:", error);
       return false;
     }
@@ -191,7 +237,8 @@ brainRoute.post(
 
 brainRoute.post("/ask", authMiddleware, async (req: Request, res: Response) => {
   try {
-    const query = req.query.query as string;
+    // const query = req.query.query as string;
+    const query = req.body.query as string;
     const user_id = req.userId as string;
 
     //create query embeding

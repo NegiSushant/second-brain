@@ -3,9 +3,9 @@ import { authMiddleware } from "../middleware";
 import { content, Tag } from "../db";
 import { Types } from "mongoose";
 import multer from "multer";
-// import { createClient } from "@supabase/supabase-js";
 import path from "path";
-import { STORAGE_KEY, STORAGE_URL } from "../config";
+import { STORAGE_URL } from "../config";
+// import { STORAGE_KEY } from "../config";
 import { supabase } from "../clients/supabase.client";
 
 const contentRoute = Router();
@@ -194,7 +194,7 @@ contentRoute.post(
 
       await content.create({
         type: type,
-        link: link,
+        link: link || "",
         title: title,
         description: description || "",
         tags: tagIds,

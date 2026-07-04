@@ -28,7 +28,7 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "langchain": "^1.2.25",
-    "mongoose": "^8.18.3",
+    "mongoose": "^9.7.3",
     "multer": "^2.0.2",
     "openai": "^6.45.0",
     "typescript": "^5.9.3",
@@ -38,5 +38,8 @@
     "@types/cookie-parser": "^1.4.9",
     "@types/cors": "^2.8.19",
     "@types/jsonwebtoken": "^9.0.10"
+  },
+  "allowScripts": {
+    "bcrypt@6.0.0": true
   }
 }

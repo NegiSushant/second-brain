@@ -14,7 +14,7 @@ if (!process.env.MODEL_NAME) throw new Error("OPENAI Model Name required!");
 export const JWT_PASSWORD: string = process.env.JWT_PASSWORD;
 export const DB_URL: string = process.env.DB_URL;
 export const STORAGE_KEY: string = process.env.SUPABASE_KEY;
-// export const STORAGE_URL: string = process.env.STORAGE_URL;
+export const STORAGE_URL: string = process.env.SUPABASE_URL;
 
 // ----------------openAI Cred -------------------------
 export const API_KEY: string = process.env.OPENAI_API_KEY;

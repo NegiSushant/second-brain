@@ -1,5 +1,5 @@
 import { supabase } from "./supabase.client";
-import { Embedings } from "../routes/azureOpenAi";
+// import { Embedings } from "../routes/azureOpenAi";
 import {OpenAIChatModel} from "../routes/OpenAIModel"
 
 // Interface for the cleaned output
