@@ -24,10 +24,6 @@ export default function MessageList({
 
   return (
     <div className="flex flex-col gap-4 px-6 py-6">
-      {/* {messages.map((message) => (
-        <MessageBubble key={message.id} message={message} />
-      ))} */}
-
       {messages.map((message) => (
         <div className="space-y-2">
           <MessageBubble message={message} />
@@ -42,23 +38,8 @@ export default function MessageList({
             <MessageToolbar content={message.content} />
           )}
         </div>
-
-        // <div key={message.id} className="space-y-2">
-        //   <MessageBubble message={message} />
-
-        //   {message.role === "assistant" &&
-        //     message.sources &&
-        //     message.sources.length > 0 && (
-        //       <div className="ml-2">
-        //         <MessageSources sources={message.sources} />
-        //       </div>
-        //     )}
-        // </div>
       ))}
-
-      {/* <div ref={bottomRef} /> */}
       {showThinking && <ThinkingBubble />}
-
       <div ref={bottomRef} />
     </div>
   );

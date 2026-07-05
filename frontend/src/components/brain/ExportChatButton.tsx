@@ -5,13 +5,8 @@ import { downloadConversation } from "../../context/conversationStorage";
 export default function ExportChatButton() {
   const handleExport = () => {
     const conversation = loadConversation();
-
     if (!conversation) return;
-
-    downloadConversation({
-      conversation,
-      format: "txt",
-    });
+    downloadConversation({ conversation, format: "txt" });
   };
 
   return (

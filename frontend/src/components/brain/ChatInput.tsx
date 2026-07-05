@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-// import { IconArrowUp } from "@tabler/icons-react";
-// import { FaArrowUp } from "react-icons/fa";
 import { IconArrowUp, IconLoader2 } from "@tabler/icons-react";
 
 interface ChatInputProps {
@@ -21,9 +19,7 @@ export default function ChatInput({
     textareaRef.current?.focus();
   }, []);
 
-  /**
-   * Auto resize textarea
-   */
+  // Auto resize textarea
   useEffect(() => {
     if (!textareaRef.current) return;
     textareaRef.current.style.height = "auto";
@@ -31,29 +27,17 @@ export default function ChatInput({
     textareaRef.current.style.height = Math.min(scrollHeight, 180) + "px";
   }, [message]);
 
-  /**
-   * Send Message
-   */
+  // Send Message
   const send = async () => {
     const query = message.trim();
     if (!query || loading) return;
-
-    // await onSend(query);
-
-    // setMessage("");
-    // textareaRef.current!.style.height = "auto";
-    // textareaRef.current?.focus();
-
     setMessage("");
     textareaRef.current?.style.setProperty("height", "auto");
     textareaRef.current?.focus();
     await onSend(query);
   };
 
-  /**
-   * Enter -> Send
-   * Shift + Enter -> New Line
-   */
+  // Enter -> Send Shift + Enter -> New Line
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key !== "Enter") return;
     if (e.shiftKey) return;
@@ -70,7 +54,6 @@ export default function ChatInput({
             rows={1}
             disabled={loading}
             value={message}
-            // placeholder={placeholder}
             placeholder={loading ? "Thinking..." : placeholder}
             maxLength={4000}
             onChange={(e) => setMessage(e.target.value)}
@@ -84,8 +67,6 @@ export default function ChatInput({
             onClick={send}
             className="ml-3 flex h-9 w-9 items-center justify-center rounded-full bg-black text-white transition-all duration-200 hover:scale-105 hover:opacity-90 disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:hover:scale-100"
           >
-            {/* <IconArrowUp size={18} /> */}
-            {/* <FaArrowUp size={18} /> */}
             {loading ? (
               <IconLoader2 size={18} className="animate-spin" />
             ) : (

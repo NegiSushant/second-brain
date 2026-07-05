@@ -21,21 +21,14 @@ export default function EmptyConversation({
   loading,
   onSend,
 }: EmptyConversationProps) {
-  //   const [input, setInput] = useState("");
-
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>,
     value: string,
   ) => {
     e.preventDefault();
-
     const query = value.trim();
-
     if (!query) return;
-
     await onSend(query);
-
-    // setInput("");
   };
 
   return (
@@ -58,7 +51,6 @@ export default function EmptyConversation({
         <PlaceholdersAndVanishInput
           placeholders={placeholders}
           disabled={loading}
-          //   onChange={(e) => setInput(e.target.value)}
           onSubmit={handleSubmit}
         />
       </div>

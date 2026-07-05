@@ -8,7 +8,6 @@ import {
 } from "../context/conversationStorage";
 
 export default function useBrainChat() {
-  // const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
     const conversation = loadConversation();
     return conversation?.messages ?? [];

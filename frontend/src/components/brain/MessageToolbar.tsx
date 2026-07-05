@@ -16,9 +16,7 @@ export default function MessageToolbar({ content }: MessageToolbarProps) {
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(content);
-
     setCopied(true);
-
     setTimeout(() => {
       setCopied(false);
     }, 2000);

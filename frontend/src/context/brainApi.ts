@@ -1,4 +1,3 @@
-// import { AskRequest, AskResponse } from "../types/chat";
 import axios from "axios";
 import type { AskRequest, AskResponse } from "../types/chat";
 
