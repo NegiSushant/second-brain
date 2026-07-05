@@ -6,7 +6,8 @@
 
 ---
 
-# 🧠 MindVault — Your Personal Second Brain (Store, Organize, Understand, Remember)
+# 🧠 MindVault — AI-Powered Second Brain
+### Store • Organize • Search • Chat with Your Knowledge
 
 ![GitHub stars](https://img.shields.io/github/stars/your-repo?style=flat\&color=yellow)
 ![GitHub forks](https://img.shields.io/github/forks/your-repo?style=flat\&color=orange)
@@ -31,7 +32,7 @@ It acts as a centralized hub for:
 * code file
 * Ask your brain (AI-Generated Summaries)
 
-Built with a modern, scalable stack and secure authentication layers.
+Built with a modern, scalable architecture featuring secure authentication, vector search, Retrieval-Augmented Generation (RAG), and OpenAI models.
 
 ---
 
@@ -39,8 +40,10 @@ Built with a modern, scalable stack and secure authentication layers.
 
 * **Authentication System** → Signin, Signup, HttpOnly Cookies(JWT Secrete)
 * **Brain Page (`/brain`)** → Store tweets, YouTube, Notion docs, Documents and Codefile
-* **Ask Your Brain (`/brain/chat`)** → Chat or ask your brain related your history (Under development)
 * **File/Doc Uploads** → Upload documents directly to Supabase Storage
+* **Ask Your Brain (`/brain/chat`)** → AI-powered chat with your personal knowledge using RAG
+* **Semantic Search** → Retrieve the most relevant content using vector embeddings
+* **Vector Database** → Generates and stores embeddings in Supabase Vector DB
 * **Responsive Navbar** → Sticky, animated, and resizable
 
 ### Core Knowledge System:
@@ -62,6 +65,9 @@ Built with a modern, scalable stack and secure authentication layers.
 * 🛢️ **MongoDB** → Database
 * 🔑 **JWT Auth** → Secure httpOnlyCookies token + refresh handling
 * ☁️ **Supabase Storage** → File uploads (PDFs, images)
+* 🤖 **OpenAI GPT-4o** → For intelligent response generation
+* 🧩 **text-embedding-3-small**  → for embedding generation
+* 🔍 **Retrieval-Augmented Generation (RAG)**  → Semantic search + context retrieval + LLM response generation
 * 🚀 **Vercel + Render** → Production deployment
 
 ---
@@ -81,8 +87,9 @@ Built with a modern, scalable stack and secure authentication layers.
 * `Auth` → User login, signup, session handling
 * `Brain` → Store/fetch/delete knowledge items
 * `Upload` → Supabase integrated file system
-* `Chat` → OpenAI gpt-4o model based chat and text-embedding-3-small for embedding
-* `Vector DB` → Supabase vector db for storing embedding of user content
+* `Chat` → AI chat powered by GPT-4o
+* `Embedding`  → Generate embeddings using text-embedding-3-small
+* `Vector DB` → Store embeddings in Supabase Vector Database
 
 ### Routes
 
@@ -101,8 +108,11 @@ Built with a modern, scalable stack and secure authentication layers.
 * Building a scalable folder structure with **features → pages → routes**
 * Integrating a React frontend with Node/Express/MongoDB backend
 * Handling protected routes on both frontend and backend
-* Implement full end to end RAG pipline for chat feature
-* Integratng **text-embedding-3-small** model for the vector embedding and **gpt-4o** for response generation
+* Designed and implemented an end-to-end **Retrieval-Augmented Generation (RAG) pipeline**
+* Generated semantic embeddings using **OpenAI text-embedding-3-small**
+* Built intelligent AI conversations using **OpenAI GPT-4o**
+* Implemented semantic search with Supabase Vector Database
+* Developed a modern chat experience with markdown rendering, source citations, thinking state, and persistent conversations
 * Deploying a split system (frontend on Vercel, backend on Render)
 
 ---
