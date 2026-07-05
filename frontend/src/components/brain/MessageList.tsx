@@ -3,6 +3,7 @@ import type { ChatMessage } from "../../types/chat";
 import MessageBubble from "./MessageBubble";
 import ThinkingBubble from "./ThinkingBubble";
 import MessageSources from "./MessageSources";
+import MessageToolbar from "./MessageToolbar";
 
 interface MessageListProps {
   messages: ChatMessage[];
@@ -28,17 +29,31 @@ export default function MessageList({
       ))} */}
 
       {messages.map((message) => (
-        <div key={message.id} className="space-y-2">
+        <div className="space-y-2">
           <MessageBubble message={message} />
 
           {message.role === "assistant" &&
             message.sources &&
             message.sources.length > 0 && (
-              <div className="ml-2">
-                <MessageSources sources={message.sources} />
-              </div>
+              <MessageSources sources={message.sources} />
             )}
+
+          {message.role === "assistant" && (
+            <MessageToolbar content={message.content} />
+          )}
         </div>
+
+        // <div key={message.id} className="space-y-2">
+        //   <MessageBubble message={message} />
+
+        //   {message.role === "assistant" &&
+        //     message.sources &&
+        //     message.sources.length > 0 && (
+        //       <div className="ml-2">
+        //         <MessageSources sources={message.sources} />
+        //       </div>
+        //     )}
+        // </div>
       ))}
 
       {/* <div ref={bottomRef} /> */}

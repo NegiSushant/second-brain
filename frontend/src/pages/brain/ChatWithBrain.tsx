@@ -1,9 +1,12 @@
 import useBrainChat from "../../hooks/useBrainChat";
 import EmptyConversation from "../../components/brain/EmptyConversation";
 import ActiveConversation from "../../components/brain/ActiveConversation";
+import ExportChatButton from "../../components/brain/ExportChatButton";
 
 export const ChatWithBrain = () => {
-  const { messages, loading, sendMessage } = useBrainChat();
+  // const { messages, loading, sendMessage } = useBrainChat();
+  const { messages, loading, sendMessage, hasConversation, newChat } =
+    useBrainChat();
 
   console.log(messages);
 
@@ -12,39 +15,51 @@ export const ChatWithBrain = () => {
   }
 
   return (
-    <ActiveConversation
-      messages={messages}
-      loading={loading}
-      onSend={sendMessage}
-    />
-  );
+    <div className="flex h-full flex-col">
+      {/* Header */}
+      <div className="mb-4 flex items-center justify-end gap-3">
+        {/* <h2 className="text-2xl font-semibold">Ask Your Brain</h2> */}
 
+        {hasConversation && (
+          <>
+            <ExportChatButton />
+            <button
+              onClick={newChat}
+              className="rounded-lg border px-4 py-2 text-sm transition hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            >
+              New Chat
+            </button>
+          </>
+        )}
+      </div>
+
+      {/* Conversation */}
+      <div className="min-h-0 flex-1">
+        <ActiveConversation
+          messages={messages}
+          loading={loading}
+          onSend={sendMessage}
+        />
+      </div>
+    </div>
+  );
   // return (
-  //   <div className="flex h-full w-full">
-  //     <EmptyConversation loading={loading} onSend={sendMessage} />
+  //   <div className="mb-4 flex items-center justify-between">
+  //     <h2 className="text-xl font-semibold">Ask Your Brain</h2>
+
+  //     {hasConversation && (
+  //       <button
+  //         onClick={newChat}
+  //         className="rounded-lg border px-3 py-2 text-sm transition hover:bg-neutral-100 dark:hover:bg-neutral-800"
+  //       >
+  //         New Chat
+  //       </button>
+  //     )}
+  //     <ActiveConversation
+  //       messages={messages}
+  //       loading={loading}
+  //       onSend={sendMessage}
+  //     />
   //   </div>
   // );
 };
-
-// import { useEffect } from "react";
-// import useBrainChat from "../../hooks/useBrainChat";
-
-// export const ChatWithBrain = () => {
-//   const { messages, loading, error, sendMessage } = useBrainChat();
-
-//   useEffect(() => {
-//     sendMessage("hello");
-//   }, []);
-
-//   return (
-//     <div className="p-4">
-//       <h1>Testing Brain Chat</h1>
-
-//       {loading && <p>Loading...</p>}
-
-//       {error && <p>{error}</p>}
-
-//       <pre>{JSON.stringify(messages, null, 2)}</pre>
-//     </div>
-//   );
-// };
