@@ -81,6 +81,8 @@ Built with a modern, scalable stack and secure authentication layers.
 * `Auth` → User login, signup, session handling
 * `Brain` → Store/fetch/delete knowledge items
 * `Upload` → Supabase integrated file system
+* `Chat` → OpenAI gpt-4o model based chat and text-embedding-3-small for embedding
+* `Vector DB` → Supabase vector db for storing embedding of user content
 
 ### Routes
 
@@ -89,7 +91,7 @@ Built with a modern, scalable stack and secure authentication layers.
 * `/signup` → Register
 * `/brain` → Main knowledge dashboard
 * `/brain/:id` → View a specific stored item
-
+* `/brain/chat` → ask your brain get response from your saved items
 ---
 
 ## 🏗️ What I Learned
@@ -99,6 +101,8 @@ Built with a modern, scalable stack and secure authentication layers.
 * Building a scalable folder structure with **features → pages → routes**
 * Integrating a React frontend with Node/Express/MongoDB backend
 * Handling protected routes on both frontend and backend
+* Implement full end to end RAG pipline for chat feature
+* Integratng **text-embedding-3-small** model for the vector embedding and **gpt-4o** for response generation
 * Deploying a split system (frontend on Vercel, backend on Render)
 
 ---
@@ -119,6 +123,10 @@ JWT_PASSWORD=your-jwt-secret-key
 SUPABASE_URL=your_supabase_url
 SUPABASE_KEY=your_supabase_key
 FRONTEND_URL=http://localhost:5173
+OPENAI_API_KEY='our_key_here'
+OPENAI_ENDPOINT='https://your-resource.openai.com/'
+EMBEDDING_MODEL='openai/text-embedding-3-small'
+MODEL_NAME='openai/gpt-4o'
 ```
 
 ---
