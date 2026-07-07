@@ -14,6 +14,7 @@ interface CleanResource {
   title: string;
   description: string;
   source: string;
+  type: string;
   updatedAt: Date;
 }
 
@@ -113,11 +114,14 @@ function extractResources(data: any[]): CleanResource[] {
     title: item.title ?? "Untitled",
     description: item.description ?? "",
     source: item.link ?? "",
+    type: item.type,
     updatedAt: item.updatedAt,
   }));
 }
 
-const createEmbeding = async (userId: string, data: CleanResource[]) => {
+
+// "tweets", "video", "document", "links", "code", "texts", "notion",
+const createEmbeding = async (userId: string, content_data: CleanResource[]) => {
   try {
     // get existing embeding
     const { data: existingEmbeddings, error } = await supabase
@@ -135,7 +139,7 @@ const createEmbeding = async (userId: string, data: CleanResource[]) => {
     );
 
     // Filter content
-    const pendingContent = data.filter((item) => {
+    const pendingContent = content_data.filter((item) => {
       const embeddingDate = embeddingMap.get(item.content_id);
 
       if (!embeddingDate) {
@@ -150,6 +154,30 @@ const createEmbeding = async (userId: string, data: CleanResource[]) => {
       return true;
     }
 
+    /*--------------------extracting the inside content of brainstore-------------*/
+    content_data.forEach(content => {
+      switch (content.type){
+        case "tweets":
+          // extract the tweet content for creating the embedding
+          break;
+
+        case "video":
+          // extract the transcript of the yt vedio
+          break;
+        
+        case "document":
+          // extracting the document content
+          break;
+        
+        case "links":
+          // extracting the link content
+          break;
+
+        default:
+          break;
+
+      } 
+    });
     const texts = pendingContent.map(
       (item) => `${item.title}\n${item.description}`,
     );
@@ -158,7 +186,7 @@ const createEmbeding = async (userId: string, data: CleanResource[]) => {
     const vectors = await openAIService.embedDocuments(texts);
 
     // Merge embeddings with metadata
-    const embeddingData = data.map((item, index) => ({
+    const embeddingData = content_data.map((item, index) => ({
       user_id: userId,
       title: item.title,
       description: item.description,
