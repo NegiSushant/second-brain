@@ -154,30 +154,6 @@ const createEmbeding = async (userId: string, content_data: CleanResource[]) => 
       return true;
     }
 
-    /*--------------------extracting the inside content of brainstore-------------*/
-    content_data.forEach(content => {
-      switch (content.type){
-        case "tweets":
-          // extract the tweet content for creating the embedding
-          break;
-
-        case "video":
-          // extract the transcript of the yt vedio
-          break;
-        
-        case "document":
-          // extracting the document content
-          break;
-        
-        case "links":
-          // extracting the link content
-          break;
-
-        default:
-          break;
-
-      } 
-    });
     const texts = pendingContent.map(
       (item) => `${item.title}\n${item.description}`,
     );
